@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Memory Experiment</title>
+    <link href="firstExp4.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-request.v1.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="stimuliAndSequences.js"></script>
+
+  </head>
+  <body onLoad="myjs:preloader()">
+
+    <div id="startN">
+
+        <h1><br><br>Welcome to the experiment!</h1>
+        The experiment will launch <div id="yesFullScreen" style="display:none">in fullscreen mode </div>when you click the button below.<br><br>
+        <button id = "startButton" type="button" class="edit-button" onclick="startExperiment()">Start</button><br><br>
+    </div>
+
+    <div id="detailsDay1" style="display:none">
+        <br><br><br><br>
+        How old are you?<br>
+        <input type="number" id="myNumber" value=""><br><br><br>
+
+        Are you male or female?<br>
+        <input type="radio" id = "gender_m" name="gender" value="male" /><label for="gender_m"> male</label><br>
+        <input type="radio" id = "gender_f" name="gender" value="female" /><label for="gender_f"> female</label><br><br><br>
+
+    </div>
+
+
+    <div id="detailsDay2" style="display:none">
+          Welcome back!<br><br>
+    </div>
+
+    <div id = "ProlificID" style="display:none">
+
+        Please enter your Participant ID<br>
+        <input type="text" id="prolificId" value=""><br><br>
+    </div>
+
+    <div id="consent" style="display:none">
+            <h1><b>Volunteer Information Sheet</b></h1><br>
+
+        <p style="text-align:left"> Title of Project: <strong>Mechanisms of Causal Inference and Decision Making in the Brain</strong><br><br>
+
+            This study has been approved by the University of Oxford Medical Sciences Inter-Divisional Research Ethics Committee; Project ID <strong>R49191/RE001</strong><br><br>
+
+            Click here to print this page:
+            <br><br>
+            <input type='button' onClick='window.print()' class="edit-button" value='Print'/>
+            <br><br><br>
+            Thank you for being willing to participate in our study.  Your contribution to our research is very valuable and we appreciate your help.
+
+            This information page is to help you decide whether to participate in our study. It is up to you to choose whether you participate and you may withdraw from the study without penalty and without giving a reason.
+
+            What is this study  about?
+
+            We are interested in understanding how people make decisions. In particular, we are interested in how people use knowledge that they have gained from past experience and apply it to help decision making.
+
+            Who is conducting this study?
+
+	<br><br>
+	<br><br>
+	Name, address and contact details of investigator:
+	<br><br>
+        Dr Mona Garvert<br>
+	Center for Functional MRI of the Brain<br>
+        Nuffield Department of Clinical Neurosciences<br>
+        University of Oxford<br>
+        Oxford OX3 9DU, UK<br>
+	<a href="mailto:compneuro@gmail.com">compneuro@gmail.com</a>
+	<br><br>
+        </p>
+    </div>
+
+    <div id="generalIntroDay1" style="display:none">
+        <br><br><br><br>
+        This experiment consists of <div id="noOfTasksDay1" style="display:inline"></div> different tasks, some of which you will do multiple times. <br>
+        Each task takes approximately 5 minutes. You will get instructions for each one before it starts. <br><br>
+        In most of the tasks you can <font color="green"><b>gain</b></font> or <font color="#cc1e1e"><b>lose</b></font> <b>coins</b> depending on your performance.<br>
+        At the end of the experiment, the <b>accumulated coins will be converted in £</b> (every 100 coins = 1£ extra) and this money will be paid to you in addition to the baseline payment.<br><br>
+        If it happens that objects are not displayed at some point during the experiment, please ignore this and continue the task.<br><br>
+        <h4><b><u>Important:</u> DO NOT REFRESH the page!<br>
+                This will cause the experiment to re-start from the very beginning.</b></h4><br><br>
+    </div>
+
+      <div id="generalIntroDay2" style="display:none">
+          <br><br><br><br>
+          You were invited back to participate in another session, because you performed really well in the experiment yesterday. Well done and thank you so much - we really appreciate the effort your are making to support our research! <br><br>
+
+          Just like yesterday, this experiment consists of <div id="noOfTasksDay2" style="display:inline"></div> different tasks, some of which you will do multiple times.
+          Each task takes approximately 5 minutes. You will get instructions for each one before it starts. <br><br>
+          In most of the tasks you can <font color="green"><b>gain</b></font> or <font color="#cc1e1e"><b>lose</b></font> <b>coins</b> depending on your performance.<br>
+          At the end of the experiment, the <b>accumulated coins will be converted in £</b> (every 100 coins = 1£ extra) and this money will be paid to you in addition to the baseline payment.<br><br>
+     </div>
+     <div id="Introday2_noMaps1" style="display:none">
+          <b>Your performance on today's tasks will depend on your memory for the pairs of objects you learned yesterday.
+          <u>You will have only 1 opportunity to remind yourself of the pairs of objects!</u><br><br>
+          In the tasks, you will not receive feedback on whether your choices were correct or incorrect. Nevertheless, your choices still affect how much extra money you will get.<br>
+          </b><br>
+          If it happens that objects are not displayed at some point during the experiment, please ignore this and continue the task.<br><br>
+      </div>
+
+    <div id="Introday2_noMaps2" style="display:none">
+        <b>Today you are in a new world. </b><br><br>
+           You will learn a new set of associations between the same objects you learned to pair yesterday. Try to ignore the object pairs you learned yesterday so you don't get confused.<br><br>
+
+          If it happens that objects are not displayed at some point during the experiment, please ignore this and continue the task.<br><br>
+      </div>
+
+      <div id="generalIntroDay3" style="display:none">
+        <br><br><br><br>
+        Thank you for performing really well again in the experiment yesterday. We really appreciate the effort your are making to support our research! <br><br>
+        Today's experiment again consists of a few different tasks, which you already know from the past two days.
+        Each task takes approximately 5 minutes. You will get instructions for each one before it starts. <br><br>
+        In most of the tasks you can <font color="green"><b>gain</b></font> or <font color="#cc1e1e"><b>lose</b></font> <b>coins</b> depending on your performance.<br>
+        At the end of the experiment, the <b>accumulated coins will be converted in £</b> (every 100 coins = 1£ extra) and this money will be paid to you in addition to the baseline payment.<br><br>
+
+            <div id="Introday3" style="display:none">
+        <b>Your performance on today's tasks will depend on your memory for the pairs of objects you learned in the past two days.</b><br><br>
+
+        You probably noticed that the background colour changed from day 1 to day 2, and with the colour you learned new associations between the objects. <br><br>
+          In today's experiment, we will ask you to perform the tasks you performed in the past two days, but sometimes based on your knowledge about associations in the <font color="red"><b>red</b></font> and sometimes based on your knowledge about associations in the <font color="blue"><b>blue</b></font> world.
+          <br><br>
+          Which associations are relevant for your decision depends on the background colour of the screen. This colour can change on every trial.
+          <b>
+              <br><br>
+          Today, you will not receive feedback on whether your choices were correct or incorrect. Nevertheless, your choices still affect how much extra money you will get, in the same way as on days 1 and 2.<br>
+          </b><br>
+      </div>
+
+
+        If it happens that objects are not displayed at some point during the experiment, please ignore this and continue the task.<br><br>
+        <h4><b><u>Important:</u> DO NOT REFRESH the page!<br>
+                This will cause the experiment to re-start from the very beginning.</b></h4><br><br>
+    </div>
+
+
+    <div id="instrPairwiseAssociations" style="display:none">
+        <br><br><br><br>
+        <div id="whichWorld" style="display:inline; font-weight:bold; font-size: 25px"></div><br><br>
+        In this world certain objects are paired (or associated) with one another. Each object can be part of multiple object pairs.<br><br>
+        To start the experiment, we will ask you to remember <b>all pairs of objects</b> in <b>this world</b>.<br>
+        You will have as much time as you like to try and remember each object pair.<br><br>
+        <div id ="newDay" style="font-weight:bold; display:none"></div>
+        <b>Make sure you remember the pairs of objects well!</b><br>
+        This will be essential for some of the other tasks in this experiment, and<br>
+        you will <font color="green"><b>gain</b></font> or <font color="#cc1e1e"><b>lose</b></font> coins depending on your performance in the other tasks.<br><br>
+        <b>Tip:</b><br>
+        It is often easier to remember object pairings by imagining situations, sentences, interactions or stories with both objects of each pair.<br><br>
+    </div>
+
+      <div id="pairwiseAssociations" style="display:none">
+          <br><br><br><br>
+        <div id="memoryTestInstructions">
+            <b>Were these objects paired?</b><br>
+            You will <font color="green"><b>gain</b></font> a coin by choosing the <b>correct</b> answer,<br>
+            and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b> answer.<br><br>
+        </div>
+          <div id="learnPairsInstructions">
+              <div id ="memoryReminder">You now have the opportunity to <b>remind yourself of the pairs</b>.</div>  <br><br><br><br>
+              Remember the pairs of objects by imagining a situation with both objects.<br>
+              You will see each pair twice.<br><br><br><br>
+          </div>
+
+          <img id="Pic1A">
+          <img id="Pic2A">
+          <br>
+
+          <div id="moveThroughObjectPairs">
+              <button type="button" class="edit-button" onclick="presentTwoObjects()">Next</button><br><br>
+          </div>
+
+          <div id="moveThroughMemoryTest">
+            <button type="button" class="edit-button" style="width:50px" onclick="recordMemoryResponse(1)">Yes</button>
+            <button type="button" class="edit-button" style="width:50px" onclick="recordMemoryResponse(0)">No</button><br><br>
+        </div>
+      </div>
+
+
+
+
+    <div id="instrMemoryTest" style="display:none">
+        <br><br><br><br>
+        <h2>Memory test</h2><br><br>
+        In this part of the experiment, your task is to recall whether two presented objects were paired or not in the previous task.<br><br>
+        You will <font color="green"><b>gain</b></font> a coin by choosing the <b>correct</b> answer,<br>
+        and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b> answer.<br><br><br><br>
+
+        <div class="textDay3" style="display:none">
+            <b>Important:<br>
+            The background colour determines whether the associations you learned on day 1 or day 2 are the ones that matter for your decision!
+            You will need to switch between these when the background colour changes. </b>
+        </div>
+    </div>
+
+    <div id="pairwiseAssociationEnd" style="display:none">
+        <br><br><br><br>
+        You correctly remembered <p style="display:inline" id="crMemories"></p> of <p style="display:inline" id="totalMemories"></p> object pairs.<br><br>
+
+    </div>
+
+
+    <div id="passiveExposureInstr" style="display:none">
+        <h2>Object orientation task</h2><br><br>
+        In this part of the experiment different objects will appear on the screen.<br>
+        Your task will be to press one button if the object is in one orientation, <br>
+        and a different button if the object is in another orientation.<br><br>
+        For example:<br><br><br>
+
+        <table align="center">
+            <thead>
+              <tr>
+                <th>If you see this orientation:</th>
+                <th>If you see this orientation:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><canvas id="Pic1PE_instr" width="200" height="200" style="border:5px solid #ffffff"></canvas></th>
+                <th><canvas id="Pic2PE_instr" width="200" height="200" style="border:5px solid #ffffff"></canvas></th>
+              </tr>
+              <tr>
+                <td><b>Press<br>F</b></td>
+                <td><b>Press<br>J</b></td>
+              </tr>
+            </tbody>
+        </table>
+        <br>
+        In the beginning, you will not know which button to press for which orientation.<br><br>
+        But you will receive feedback after each button press<br>
+        indicating whether your choice was correct.<br><br>
+
+        If the frame turns <font color="green"><b>green</b></font>, your choice was <font color="green">correct</font>.<br>
+        If it turns <font color="#cc1e1e"><b>red</b></font>, your choice was <font color="#cc1e1e">incorrect</font>.<br>
+        This will allow you learn over time which button to press for each object's orientation.<br>
+        If you are unsure, please guess.<br><br>
+
+        You will <font color="green"><b>gain</b></font> a coin for each <b>correct</b> button press<br>
+        and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b> button press.<br><br>
+
+        Try to be as quick and accurate as you can!<br><br>
+
+        Please place your two index fingers on <b>F</b> and <b>J</b>.<br><br>
+
+    </div>
+
+    <div id="passiveExposure" style="display:none">
+        Please place your two index fingers on <b>F</b> and <b>J</b>.
+        <p>Press<br><br><b>J</b> or <b>F</b><br><br>depending on the orientation of the larger object.<br>
+        You can ignore the small object.<br><br></p>
+
+        <table>
+            <tbody>
+              <tr>
+                <th style="text-align: right"><canvas id="PicOldPE" width="100" height="100" style="border:5px solid #ffffff"></canvas></th>
+                <th style="text-align: left"><canvas id="PicNewPE" width="200" height="200" style="border:5px solid #ffffff"></canvas></th>
+              </tr>
+            </tbody>
+        </table>
+
+
+        <br><br>
+    <br>
+</div>
+
+    <div id="passiveExposureEndBlock" style="display:none">
+        <p style="font-size: 30px">End of this task</p>
+
+        Correct choices in this block: <p id="displayCrBlock"></p><br><br>
+        Average reaction time: <p id="displayRTBlock"></p><br>
+        Please take a break.<br><br>
+        Press the button when you are ready to continue.<br><br><br>
+
+    </div>
+
+    <div id="instrPassiveNavigation" style="display:none">
+        <br><br><br><br>
+        <h2>Choice task</h2><br>
+        In this part of the experiment your task is to <b>click through the cards with the objects to get coins</b>.<br><br>
+        In the centre of the screen you will see the card you last selected.<br>
+        Above this card you can see two other objects, which you can choose next.<br>
+        As you will see, these are both objects that are paired with the object on the card in the centre!<br><br>
+        You can choose the next card by clicking on it.<br><br>
+        There is no right or wrong choice here, but <b>try to explore as many different associations of cards as possible in order to maximise the number of coins </b>.<br>
+     <br><br>
+
+        <br><br>
+
+        Press the button when you are ready to start.<br><br><br>
+
+    </div>
+
+    <div id="passiveNavigation" style="display:none">
+
+        Click on the card you would like to choose next.<br>
+        The small card is the one you selected last.<br><br>
+
+        Try to explore as many different associations of cards as possible in order to maximise the number of coins you can get in this task.<br><br><br>
+    </div>
+
+    <div id="instrObjDiff" style="display:none">
+        <br><br><br><br>
+        <h2>Distance task</h2><br>
+        In this part of the experiment you will be presented with one target object at the bottom of the screen and two goal objects presented on top of the target object.
+        Your task is to <b>choose the object you would reach in <u>fewer</u> steps</b> from the target object if you moved from association to association like you did in the previous task (see visualisation below).<br><br>
+        Note that this time you will not be able to actually click from association to association, but you can try to do this in your head. <br><br>
+        In other words, when you try to make this choice, try to think about the objects the target object is paired with, and the objects the paired objects are paired with and so on. Which of the two objects would you reach in fewer steps?<br><br>
+        If you are unsure try to rely on your intuition.<br><br>
+        <div class="textDay3" style="display:none">
+            <b>Important:<br>
+            The background colour determines whether the associations you learned on day 1 or day 2 are the ones that matter for your decision!
+            You will need to switch between these when the background colour changes.<br><br></b>
+        </div>
+        You will <font color="green"><b>gain</b></font> a coin for each <b>correct</b> answer<br>
+        and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b> one.<br><br>
+
+        <table align="center">
+            <tbody>
+
+              <tr> <!--First row-->
+                <th>Option 1<br><font color="red"><b>Incorrect choice</b></font><br><canvas id="exPic0PN" width="150" height="150" style="border:5px solid #ffffff"></canvas></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Option 2<br><font color="green"><b>Correct choice</b></font><br><canvas id="exPic1PN" width="150" height="150" style="border:5px solid #ffffff"></canvas></th>
+              </tr>
+              <tr> <!--Second row-->
+                <th><canvas width="150" height="50"></canvas></th>
+                <th style="text-align: center"><img id="exStep3l" src="images/empty.png" style="height:75px; width:75px;"></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr> <!--Third row-->
+                <th></th>
+                <th></th>
+                <th style="text-align: center"><img id="exStep2l" src="images/empty.png" style="height:75px; width:75px;"></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: center"><img id="exStep1r" src="images/empty.png" style="height:75px; width:75px;"></th>
+                <th></th>
+                <th></th>
+
+              </tr>
+              <tr> <!--Fourth row-->
+                <th></th>
+                <th>More steps</th>
+                <th><canvas width="50" height="50"></canvas></th>
+                <th style="text-align: center"><img id="exStep1l" src="images/empty.png" style="height:75px; width:75px;"></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Fewer steps</th>
+                <th></th>
+
+              </tr>
+              <tr><!--Fifth rw-->
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><b>Target</b><br>
+                    <canvas id="exChosenPicPN" width="100" height="100" style="border:5px solid #ffffff"></canvas></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+
+              </tr>
+            </tbody>
+        </table>
+
+        <br><br><br><br>
+        Note that you will <b>not</b> see the steps in the actual task - try to imagine them.<br><br>
+        Press the button when you are ready to start.<br><br><br>
+    </div>
+
+    <div id="objectDifference" style="display:none">
+        <b>Which of the options is closer to the target? </b><br>
+        Click on the card you would reach in <b>fewer steps</b><br>
+        from the small card.<br><br>
+
+        If you make the <b>correct</b> choice you will <font color="green"><b>gain</b></font> a coin.<br>
+        If you make the <b>incorrect</b>  choice you will <font color="#cc1e1e"><b>lose</b></font> a coin.<br><br>
+    </div>
+
+    <div id="ChooseBetweenTwoOptions" style="display:none">
+        <table align="center">
+            <tbody>
+              <tr>
+                    <th>Option 1<br><img id="Pic0PN"  height="150" width="150" style="border:5px solid white"></th>
+                    <th><canvas id="placeholder" width="100" height="200"></canvas></th>
+                    <th>Option 2<br><img id="Pic1PN"  height="150" width="150" style="border:5px solid white"></th>
+              </tr>
+            </tbody>
+        </table>
+
+        <br><br><br><br><br>Target<br>
+        <img class = "targetPic" id="chosenPicPN">
+
+        <br><br>
+        <button id="moveToNext" type="button" class="edit-button" onclick="passiveNavigationPresentNewObj()" disabled>Next card</button><br><br>
+        <br>
+    </div>
+
+    <div id="instrFindPartner" style="display:none">
+        <br><br><br><br>
+        <h2>Finding the pair task</h2><br><br>
+        This part is another test of your memory for object pairs.<br><br>
+        You will be presented with one object at the top of the screen.<br>
+        Your task is to pick the object it was paired with from the three objects<br>
+        presented below.<br> <br>
+        You will  <font color="green"><b>gain</b></font> a coin for each <b>correctly</b> remembered object pair<br>
+        and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>mistake</b> you make.<br><br>
+        <div class="textDay3" style="display:none">
+            <b>Important:<br>
+            The background colour determines whether the associations you learned on day 1 or day 2 are the ones that matter for your decision!
+            You will need to switch between these when the background colour changes. </b>
+        </div>
+
+        Press the button when you are ready to start.<br><br><br>
+
+    </div>
+
+    <div id="startFindPartner" style="display:none">
+        <b>Which object is this one paired with?</b><br>
+        Click on the <b>correct</b> one.<br><br>
+        You will <font color="green"><b>gain</b></font> a coin by choosing the <b>correctly</b> answer,<br>
+        and <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b>  answer.<br><br>
+
+
+        <img id="targetFP"><br><br><br><br>
+        <table align="center">
+            <tbody>
+              <tr>
+                <th><img id="Pic1FP" onclick="findPartnerChooseObj(0)"></th>
+                <th><img id="Pic2FP" onclick="findPartnerChooseObj(1)"></th>
+                <th><img id="Pic3FP" onclick="findPartnerChooseObj(2)"></th>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="findPartnerEnd" style="display:none">
+        <p style="font-size: 30px">End of this task</p>
+        <br><br><br><br>
+        You correctly remembered <p id="crFindPartnerMemories"></p> of <p id="totalFindPartnerMemories"></p> object pairs.<br><br>
+    </div>
+
+    <div id="instrGoalNavigation1" style="display:none">
+        <br><br><br><br>
+        <h2>Finding the target task</h2><br><br>
+        In this part of the experiment your task is to find a particular target object.
+        The target object will be displayed at the top of the screen (see visualisation below).<br><br>
+        In the centre of the screen you will see the card with the object you last selected.
+        Above this object you can see two cards with the objects you can choose next.
+        Both of these objects were paired with the object you last selected.<br><br>
+        When you choose the next object you will be presented with a new set of objects the chosen object was paired with.
+        This means that by clicking through the objects you move from association to association, until you reach the target.<br><br>
+        Below the objects, you can see a progress bar and a certain number of coins.
+        Each correct choice you make moves the progress bar closer to the end. If you fill it you get the number of coins displayed below.
+        If you make a mistake, the progress bar moves away from the end, and a coin will be subtracted.<br>
+        This means that the <b>fewer steps</b> it takes you to reach the target, the <font color="green"><b>more</b></font> coins you will gain.<br><br><br>
+
+        <img id = "visualizeGoalNavigation" src="images/instructions/goalNavigation.png" height="1000"><br><br><br>
+
+        <div class="textDay3" style="display:none">
+            <b>Important:<br>
+            The background colour determines whether the associations you learned on day 1 or day 2 are the ones that matter for your decision!
+            You will need to switch between these when the background colour changes. </b>
+        </div>
+        <br><br>
+        Press the button when you are ready to start.<br><br><br>
+
+    </div>
+
+
+          <div id="instrGoalNavigation2" style="display:none">
+        <br><br><br><br>
+        <h2>Finding the target task</h2><br><br>
+        In this part of the experiment your task is to find a particular target object.
+        The target object will be displayed on the top of the screen (see visualisation below).<br><br>
+        In the centre of the screen you will see the card with the object you last selected.
+        Above this object you can see two cards with the objects you can choose next.
+        Both of these objects were paired with the object you last selected.<br><br>
+        When you choose the next object you will be presented with a new set of objects the chosen object was paired with.
+        This means that by clicking through the objects you move from association to association, until you reach the target.<br><br>
+        Below the objects, you can see a progress bar and a certain number of coins.
+        Each correct choice you make moves the progress bar closer to the end. If you fill it you get the number of coins displayed below.
+        If you make a mistake, the progress bar moves away from the end, and a coin will be subtracted.<br>
+        This means that the <b>fewer steps</b> it takes you to reach the target, the <font color="green"><b>more</b></font> coins you will gain.<br><br><br>
+
+        <img id = "visualizeGoalNavigation" src="images/instructions/goalNavigation.png" height="1000"><br><br><br>
+
+        Press the button when you are ready to start.<br><br><br>
+
+    </div>
+
+          <div id="instrGoalNavigation3" style="display:none">
+        <br><br><br><br>
+        <h2>Finding the target task</h2><br><br>
+        In this part of the experiment your task is to find a particular target object.
+        The target object will be displayed on the top of the screen (see visualisation below).<br><br>
+        In the centre of the screen you will see the card with the object you last selected.
+        Above this object you can see two cards with the objects you can choose next.
+        Both of these objects were paired with the object you last selected.<br><br>
+        When you choose the next object you will be presented with a new set of objects the chosen object was paired with.
+        This means that by clicking through the objects you move from association to association, until you reach the target.<br><br>
+         <b>You will not receive feedback on whether your choices were correct or incorrect. Nevertheless, they will still affect how much extra money you will get.</b><br>
+        <br>
+        This means that the <b>fewer steps</b> it takes you to reach the target, the <font color="green"><b>more</b></font> coins you will gain.<br><br><br><br><br><br>
+
+        <img id = "visualizeGoalNavigation" src="images/instructions/goalNavigationNoFeedback.png" height="1000"><br><br><br>
+
+
+            <b>Important:<br>
+            The background colour determines whether the associations you learned on day 1 or day 2 are the ones that matter for your decision!
+            You will need to switch between these when the background colour changes. </b>
+
+        <br><br>
+        Press the button when you are ready to start.<br><br><br>
+
+    </div>
+
+    <div id="goalNavigation" style="display:none">
+        Click on the object you would like to choose next to <b>find the target object</b>.<br>
+        The object at the bottom is the one you selected last.<br><br>
+
+       The <b>fewer steps</b> to the target, the <font color="green"><b>more</b></font> coins you will gain.<br>
+       You will <font color="#cc1e1e"><b>lose</b></font> a coin for each <b>incorrect</b> choice.<br><br><br>
+ <br><br>
+        <br>
+
+        Target:<br>
+        <img class = "targetPic" id="targetPicGN"><br><br>
+
+
+
+        Next choice:<br>
+        <table>
+            <tbody>
+              <tr>
+                <th style="text-align: right"><img id="Pic0GN" width="150" height="150" style="border:5px solid #ffffff"></th>
+                <th style="text-align: center"><img id="feedbackAtButtonPress2" src="images/empty.png" style="height:75px; width:75px;"></th>
+                <th style="text-align: left"><img id="Pic1GN" width="150" height="150" style="border:5px solid #ffffff"></th>
+              </tr>
+            </tbody>
+        </table>
+
+        <br><br>
+
+        Last chosen:<br>
+        <img class = "targetPic" id="chosenPicGN"><br>
+
+        <div id ="goalNavigationPerformance">
+            <!--Progress bar-->
+            <div id="progressbar"></div><br><br>
+            Coins to win on this trial if you fill the progress bar:<br>
+            <img id ="progressCoins" src="images/coins/0coins.png" >
+        </div>
+    </div>
+
+      <div id="displayGoalNavigationSequence" style="display:none">
+
+          <div id ="goalNavigationShortestPathSelected" style ="display:none">
+              <b>Well done, you collected the maximum number of coins on this trial!</b><br>
+          </div>
+          <br><br>
+          This is the sequence of objects you selected:<br>
+          <b>Have a careful look at the sequence. Sometimes it can help you do better in future trials.</b><br><br><br>
+
+        <table id="goalNavSequence" style="text-align: center;">
+            <tbody>
+            </tbody>
+        </table>
+
+          <br> Press the button to continue: <br><br>
+          <button id="nextGoalNavigationTrial" type="button" class="edit-button" onclick="displayGoalNavigation()">Continue</button><br><br>
+      </div>
+
+
+      <div id="endOfBlock" style="display:none">
+        <p style="font-size: 30px">End of this task</p>
+        Coins you collected in this block: <p id="displayRewardsBlock"></p><br><br>
+        Please take a break.<br><br>
+        Press the button when you are ready to continue.<br><br><br>
+
+    </div>
+    <div id="displayRewards" style="display:none">
+        <img id="feedbackAtButtonPress" src="images/empty.png" style="height:75px; width:75px;">
+        <br><br><br><br><br>
+        Coins you collected in this part of the experiment:<br>
+        <img id="collectedReward1" src="images/coins/0coins.png" > <br>
+        <img id="collectedReward2" src="images/coins/0coins.png" > <br>
+        <img id="collectedReward3" src="images/coins/0coins.png" > <br>
+    </div>
+
+      <div align="left" id="participantFeedbackDay1" style="display:none">
+          <br><br><br>
+
+
+          <h3>Before finishing the experiment, we would be very grateful if you could give us some quick feedback.</h3><br>
+          <br>
+
+          <b>On a scale from 1 (easy) to 10 (hard), how difficult did you find it to remember the object pairs?</b><br>
+          <input type="radio" id = "objpairs_diff_1" name="objpairs_difficulty" value="1" /><label for="objpairs_diff_1"> 1</label>
+          <input type="radio" id = "objpairs_diff_2" name="objpairs_difficulty" value="2" /><label for="objpairs_diff_2"> 2</label>
+          <input type="radio" id = "objpairs_diff_3" name="objpairs_difficulty" value="3" /><label for="objpairs_diff_3"> 3</label>
+          <input type="radio" id = "objpairs_diff_4" name="objpairs_difficulty" value="4" /><label for="objpairs_diff_4"> 4</label>
+          <input type="radio" id = "objpairs_diff_5" name="objpairs_difficulty" value="5" /><label for="objpairs_diff_5"> 5</label>
+          <input type="radio" id = "objpairs_diff_6" name="objpairs_difficulty" value="6" /><label for="objpairs_diff_6"> 6</label>
+          <input type="radio" id = "objpairs_diff_7" name="objpairs_difficulty" value="7" /><label for="objpairs_diff_7"> 7</label>
+          <input type="radio" id = "objpairs_diff_8" name="objpairs_difficulty" value="8" /><label for="objpairs_diff_8"> 8</label>
+          <input type="radio" id = "objpairs_diff_9" name="objpairs_difficulty" value="9" /><label for="objpairs_diff_9"> 9</label>
+          <input type="radio" id = "objpairs_diff_10" name="objpairs_difficulty" value="10" /><label for="objpairs_diff_10"> 10</label>
+          <br><br>
+          <b>Which task did you <u>enjoy the most</u>?</b><br>
+          <input type="radio" id = "MemoryTestTask" name="mostEnjoyableTask" value="MemoryTestTask" /><label for="MemoryTestTask">Memory test - recalling if the cards were paired or not.</label><br>
+          <input type="radio" id = "OrientationTask" name="mostEnjoyableTask" value="OrientationTask" /><label for="objpairs_diff_2">Object orientation task - pressing F or J according to the object orientation.</label><br>
+          <input type="radio" id = "PassiveNavTask" name="mostEnjoyableTask" value="PassiveNavTask" /><label for="PassiveNavTask">Choice task - clicking through the objects to collect coins.</label><br>
+          <input type="radio" id = "FindPairTask" name="mostEnjoyableTask" value="FindPairTask" /><label for="FindPairTask">Finding the pair task - choosing the one of three objects that was paired with the presented one.</label><br>
+          <input type="radio" id = "FindTargetTask" name="mostEnjoyableTask" value="FindTargetTask" /><label for="FindTargetTask">Finding the target task - finding a target card by clicking through cards.</label><br>
+          <input type="radio" id = "ObjectDiffTask" name="mostEnjoyableTask" value="ObjectDiffTask" /><label for="ObjectDiffTask">Distance task - selecting which object could be reached in fewer steps from the presented one.</label>
+          <br><br>
+          <b>And which task did you <u>enjoy the least</u>?</b><br>
+          <input type="radio" id = "MemoryTestTaskLE" name="lessEnjoyableTask" value="MemoryTestTaskLE" /><label for="MemoryTestTaskLE">Memory test - recalling if the cards were paired or not.</label><br>
+          <input type="radio" id = "OrientationTaskLE" name="lessEnjoyableTask" value="OrientationTask" /><label for="objpairs_diff_2">Object orientation task - pressing F or J according to the object orientation.</label><br>
+          <input type="radio" id = "PassiveNavTaskLE" name="lessEnjoyableTask" value="PassiveNavTaskLE" /><label for="PassiveNavTask">Choice task - clicking through the objects to collect coins.</label><br>
+          <input type="radio" id = "FindPairTaskLE" name="lessEnjoyableTask" value="FindPairTaskLE" /><label for="FindPairTask">Finding the pair task - choosing the one of three objects that was paired with the presented one.</label><br>
+          <input type="radio" id = "FindTargetTaskLE" name="lessEnjoyableTask" value="FindTargetTaskLE" /><label for="FindTargetTask">Finding the target task - finding a target card by clicking through cards.</label><br>
+          <input type="radio" id = "ObjectDiffTaskLE" name="lessEnjoyableTask" value="ObjectDiffTaskLE" /><label for="ObjectDiffTask">Distance task - selecting which object could be reached in fewer steps from the presented one.</label>
+          <br><br>
+          <b>Which task did you find the <u>easiest</u>?</b><br>
+          <input type="radio" id = "MemoryTestTaskEasiest" name="EasiestTask" value="MemoryTestTaskEasiest" /><label for="MemoryTestTaskEasiest">Memory test - recalling if the cards were paired or not.</label><br>
+          <input type="radio" id = "OrientationTaskEasiest" name="EasiestTask" value="OrientationTaskEasiest" /><label for="OrientationTaskEasiest">Object orientation task - pressing F or J according to the object orientation.</label><br>
+          <input type="radio" id = "PassiveNavTaskEasiest" name="EasiestTask" value="PassiveNavTaskEasiest" /><label for="MemoryTestTaskEasiest"> task - clicking through the objects to collect coins.</label><br>
+          <input type="radio" id = "FindPairTaskEasiest" name="EasiestTask" value="FindPairTaskEasiest" /><label for="FindPairTaskEasiest">Finding the pair task - choosing the one of three objects that was paired with the presented one.</label><br>
+          <input type="radio" id = "FindTargetTaskEasiest" name="EasiestTask" value="FindTargetTaskEasiest" /><label for="FindTargetTaskEasiest">Finding the target task - finding a target card by clicking through cards.</label><br>
+          <input type="radio" id = "ObjectDiffTaskEasiest" name="EasiestTask" value="ObjectDiffTaskEasiest" /><label for="ObjectDiffTaskEasiest">Distance task - selecting which object could be reached in fewer steps from the presented one.</label>
+          <br><br>
+          <b>And Which task did you find the <u>hardest</u>?</b><br>
+          <input type="radio" id = "MemoryTestTaskHardest" name="HardestTask" value="MemoryTestTaskHardest" /><label for="MemoryTestTaskHardest">Memory test - recalling if the cards were paired or not.</label><br>
+          <input type="radio" id = "OrientationTaskHardest" name="HardestTask" value="OrientationTaskHardest" /><label for="OrientationTaskHardest">Object orientation task - pressing F or J according to the object orientation.</label><br>
+          <input type="radio" id = "PassiveNavTaskHardest" name="HardestTask" value="PassiveNavTaskHardest" /><label for="MemoryTestTaskHardest">Choice task - clicking through the objects to collect coins.</label><br>
+          <input type="radio" id = "FindPairTaskHardest" name="HardestTask" value="FindPairTaskHardest" /><label for="FindPairTaskHardest">Finding the pair task - choosing the one of three objects that was paired with the presented one.</label><br>
+          <input type="radio" id = "FindTargetTaskHardest" name="HardestTask" value="FindTargetTaskHardest" /><label for="FindTargetTaskHardest">Finding the target task - finding a target card by clicking through cards.</label><br>
+          <input type="radio" id = "ObjectDiffTaskHardest" name="HardestTask" value="ObjectDiffTaskHardest" /><label for="ObjectDiffTaskHardest">Distance task - selecting which object could be reached in fewer steps from the presented one.</label>
+          <br><br>
+          <b>Do you have any other comments? <br>
+              Please let us know if any of the instructions were unclear or if you noticed anything
+              unusual during the experiment, for example if sometimes the objects were not displayed,
+              or if the program froze at any point.<br></b>
+          <input type="text" style="height:50px; width:800px" id="feedbackComments" value=""><br><br>
+          <br><br>
+          <h2><b>Thank you for your feedback!</b></h2><br>
+      </div>
+
+            <div align="left" id="participantFeedbackDay2" style="display:none">
+          <br><br><br>
+          <h3>Before finishing the experiment, we would be very grateful if you could give us some quick feedback.</h3><br>
+          <br>
+
+          <b>On a scale from 1 (easy) to 10 (hard), how difficult did you find it to remember the object pairs today?</b><br>
+          <input type="radio" id = "objpairs_diff_1" name="objpairs_difficulty" value="1" /><label for="objpairs_diff_1"> 1</label>
+          <input type="radio" id = "objpairs_diff_2" name="objpairs_difficulty" value="2" /><label for="objpairs_diff_2"> 2</label>
+          <input type="radio" id = "objpairs_diff_3" name="objpairs_difficulty" value="3" /><label for="objpairs_diff_3"> 3</label>
+          <input type="radio" id = "objpairs_diff_4" name="objpairs_difficulty" value="4" /><label for="objpairs_diff_4"> 4</label>
+          <input type="radio" id = "objpairs_diff_5" name="objpairs_difficulty" value="5" /><label for="objpairs_diff_5"> 5</label>
+          <input type="radio" id = "objpairs_diff_6" name="objpairs_difficulty" value="1" /><label for="objpairs_diff_6"> 6</label>
+          <input type="radio" id = "objpairs_diff_7" name="objpairs_difficulty" value="2" /><label for="objpairs_diff_7"> 7</label>
+          <input type="radio" id = "objpairs_diff_8" name="objpairs_difficulty" value="3" /><label for="objpairs_diff_8"> 8</label>
+          <input type="radio" id = "objpairs_diff_9" name="objpairs_difficulty" value="4" /><label for="objpairs_diff_9"> 9</label>
+          <input type="radio" id = "objpairs_diff_10" name="objpairs_difficulty" value="5" /><label for="objpairs_diff_10"> 10</label>
+          <br><br>
+
+          <b>Do you have any other comments? <br>
+              Please let us know if any of the instructions were unclear or if you noticed anything <br>
+              unusual during the experiment, for example if sometimes the objects were not displayed, <br>
+              or if the program froze at any point.<br></b>
+          <input type="text" style="height:50px; width:800px" id="feedbackComments" value=""><br><br>
+          <br><br>
+          <h2><b>Thank you for your feedback!</b></h2><br>
+      </div>
+
+      <!-- Buttons to be pressed for proceeding to the next part of the experiment -->
+      <button type="button" id="skip-button"  style="display:none" onclick="proceedInExpt()">Skip</button><br><br>
+      <button id="proceed" type="button" class="edit-button" onclick="proceedInExpt()">Continue</button><br><br>
+
+          <div id="endExperiment" style="display:none">
+              <p style="font-size: 40px">End of the experiment</p>
+
+              Thank you for participating! <br><br>
+              You collected<br><p id ="totalCollectedReward" style="display:inline"></p><br>coins in this experiment<br>
+              so you will get a bonus of<br><br>
+              <h2 style="display:inline">£</h2><p style="display:inline; font-size: 30px" id="bonus"></p><br><br>
+
+              <div id="inviteForFollowUp"  style="display:none">
+                  You did very well and we would like to invite you for a follow-up experiment tomorrow.<br>
+                  Please check back on Prolific if you would be interested in participating.<br><br><br>
+              </div>
+
+              Your participant ID is<br><p id="subjID" style="display:inline"></p><br>
+              <b>Very important</b> - Please note the ID down! <br><br>
+              <h4><b>Please send us message in case any of the instructions were unclear or if you noticed anything <br>
+              unusual during the experiment, for example if sometimes the objects were not displayed, <br>
+              or if the program froze at any point.<br>Thank you!</b></h4><br>
+
+              <div id="inviteForFollowUp2"  style="display:none">
+                  You will need it if you would like to participate in the follow-up study.<br>
+              </div>
+
+
+                <div id="submitToProlific" style="display:none">
+                    <br>
+                    <strong>Important!</strong><br>
+                    Click the button below to end the experiment and submit your task data.<br><br>
+                    <form action="https://prolific.ac/submissions/complete?cc=HD7PQZU6"><input type="submit" value="Submit" /></form>
+                </div>
+            </div>
+          <script src="myjs.js" type="text/javascript"></script>
+
+  </body>
+</html>
