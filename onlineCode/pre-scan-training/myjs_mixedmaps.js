@@ -6,10 +6,10 @@
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Definition of variables
-// 
+//
 //"use strict";
 var d = new Date();
-var d_pres = new Date(); 
+var d_pres = new Date();
 var d_button = new Date();
 var canvas, ctx1, ctx2;
 var peImg1 = new Image();
@@ -22,14 +22,14 @@ var object;
 
 // initialize random number generator
 var mn = Math.floor(mn/2);
-var i, t, nr, o, ix, nonix; 
+var i, t, nr, o, ix, nonix;
 for (nr === 0; nr < mn; nr++){
    Math.random();
 }
-var backGroundImage0 = new Image(); 
-var backGroundImage1 = new Image(); 
- 
-// Is this participant recruited from prolific? 
+var backGroundImage0 = new Image();
+var backGroundImage1 = new Image();
+
+// Is this participant recruited from prolific?
 var canvas1, canvas2, ctx1, ctx2, imPE2, imPE1;
 var imgEx0 = new Image(); var imgEx1 = new Image(); var imgEx2 = new Image();
 
@@ -42,7 +42,7 @@ var feedbackImg2 = document.getElementById("feedbackAtButtonPress2");
 var progressCoins = document.getElementById("progressCoins");
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// General functions 
+// General functions
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -80,7 +80,7 @@ function saveData() {
         async: false,
         data: JSONstring
     });
-    
+
     var timeLinePath = dir + "/data/v" + data.version + '_day' + data.day + "_"+ data.subject_id + "_timeLine.JSON";
     var timeLineString = JSON.stringify(exptTimeLine);
 
@@ -93,24 +93,24 @@ function saveData() {
     });
 }
 
-// Ask subjects for prolific ID if they say they have one   
+// Ask subjects for prolific ID if they say they have one
 function enterProlific(){
     var rad = document.myForm.prolificParticipant;
     for(var i = 0; i < rad.length; i++) {
         rad[i].onclick = function() {
             if (data.day === 1) {
                 if (this.value === "yes"){
-                    $('#enterProlificIDDay1').show();    
+                    $('#enterProlificIDDay1').show();
                     data.prolificPart = true;
                     data.prolificTick = true;
                 } else {
                     $('#enterProlificIDDay1').hide();
                     data.prolificPart = false;
-                    data.prolificTick = false;                    
+                    data.prolificTick = false;
                 };
             } else {
                 if (this.value === "yes"){
-                    $('#detailsDay2_2').show();    
+                    $('#detailsDay2_2').show();
                     data.prolificPart = true;
                     data.prolificTick = true;
                 } else {
@@ -125,15 +125,15 @@ function enterProlific(){
 
 // Preload background images
 function preloader() {
-    backGroundImage0.src = "images/background/bg0.jpg";
-    backGroundImage1.src = "images/background/bg1.jpg";  
+    backGroundImage0.src = "../images/background/bg0.jpg";
+    backGroundImage1.src = "../images/background/bg1.jpg";
 }
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Experimental time line
 function startExperiment(){
     data.startTime = d.getTime();
-        
+
     if(settings.fullscreen){
         var element = document.documentElement;
         if (element.requestFullscreen) {
@@ -156,7 +156,7 @@ function TimeLine(toShow, toHide, toRun, maxCoins){
     this.toRun      = toRun;
     this.maxCoins   = maxCoins;
     this.toStart;
-    this.toEnd; 
+    this.toEnd;
 }
 
 var exptTimeLine = [];
@@ -164,12 +164,12 @@ var runThrough  = -1;
 
 // Start
 window.onload = function () {
-    $("startN").show(); 
+    $("startN").show();
     $("#proceed").hide();
     $("startButton").show();
     if (settings.fullscreen) {
-        $("#yesFullScreen").show(); 
-    } 
+        $("#yesFullScreen").show();
+    }
 };
 
 var consent         = new TimeLine(["consent"], [], [],0);
@@ -271,7 +271,7 @@ exptTimeLine.push(startObjDiff);
 exptTimeLine.push(endObjDiff);
 exptTimeLine.push(memoryReminder);
 exptTimeLine.push(participantFeedbackDay1);
-exptTimeLine.push(endExperimentDay1); 
+exptTimeLine.push(endExperimentDay1);
 */
 
 
@@ -324,74 +324,74 @@ var maxCoins = 0;
 for (h = 0; h < exptTimeLine.length; h++){
     maxCoins += exptTimeLine[h].maxCoins;
 }
-console.log("Maximum number of coins: " + maxCoins);   
+console.log("Maximum number of coins: " + maxCoins);
 
 function doNothing(){
 }
 
 function recordTime(){
     d = new Date();
-    return d.getTime() - data.startTime;    
+    return d.getTime() - data.startTime;
 }
 
 // Run through experimental timeline
 function proceedInExpt(){
-    runThrough++;    
+    runThrough++;
     i = -1;
     exptTimeLine[runThrough].toStart = d.getTime();
-    
-    imRew1.src = "images/coins/0coins.png"; 
-    imRew2.src = "images/coins/0coins.png"; 
-    imRew3.src = "images/coins/0coins.png"; 
-    
-    feedbackImg.src = "images/empty.png";    
-    
+
+    imRew1.src = "../images/coins/0coins.png";
+    imRew2.src = "../images/coins/0coins.png";
+    imRew3.src = "../images/coins/0coins.png";
+
+    feedbackImg.src = "../images/empty.png";
+
     document.onkeydown = doNothing; // if a key is pressed
-            
+
     $("div").hide(); $("button").hide();
     if (!settings.hideSkipButton){
         $("#skip-button").show();
     }
-    
+
     for (var c = 0; c<exptTimeLine[runThrough].toShow.length; c++){
         $("#" + exptTimeLine[runThrough].toShow[c]).show().children().show();
-    }    
+    }
     for (var c = 0; c<exptTimeLine[runThrough].toHide.length; c++){
         $("#" + exptTimeLine[runThrough].toHide[c]).hide();
-    }    
+    }
     for (var c = 0; c<exptTimeLine[runThrough].toRun.length; c++){
         exptTimeLine[runThrough].toRun[c]();
     }
-    
+
     // Display reward
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";   
-    
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     data.totalReward += Math.max(0,obj.totalRew);
-    document.getElementById("displayRewardsBlock").innerHTML = obj.totalRew;  
-    
+    document.getElementById("displayRewardsBlock").innerHTML = obj.totalRew;
+
     data.timeLine[runThrough]   = exptTimeLine[runThrough].toShow[0];
 }
 
 function endExp() {
     saveData();
-    document.getElementById("subjID").innerHTML                 = data.subject_id;    
+    document.getElementById("subjID").innerHTML                 = data.subject_id;
     document.getElementById("totalCollectedReward").innerHTML   = data.totalReward;
     document.getElementById("bonus").innerHTML                  = data.totalReward/100;
-    
+
     if (data.prolificPart === false){
         $("#submitToProlific").text("You can now close the browser to exit the experiment.");
-    };      
-    
+    };
+
     if (data.totalReward > data.perfCriterion && data.prolificPart === true){
-        $("#inviteForFollowUp").show(); 
+        $("#inviteForFollowUp").show();
         $("#inviteForFollowUp2").show();
     }
     data.exptTimeLine = exptTimeLine;
 }
 
-function loadSubjectData(){    
+function loadSubjectData(){
     // Convert to numerical ID
     data.participantId = document.getElementById("prolificId").value;
     for (var i = 0; i<data.participantId.length; i++){
@@ -400,11 +400,11 @@ function loadSubjectData(){
         }
     }
     data.subject_id = Number(data.subject_id);
-    
+
     if (data.subject_id.length < 1 || isNaN(data.subject_id)){
         data.subject_id = Math.floor(Math.random()*100000000);
     }
-    
+
     //  Load subject-specific stimuli
     var xhttp;
     if (window.XMLHttpRequest) {
@@ -434,7 +434,7 @@ function loadSubjectData(){
         document.getElementById("newDay").innerHTML.display = "none";
     }
     xhttp.send();
-    
+
     data.option = [];
     data.option[0] = ((data.subject_id % 2) === 0) ? "70" : "74";
     data.option[1] = ((data.subject_id % 2) === 0) ? "74" : "70";
@@ -442,7 +442,7 @@ function loadSubjectData(){
     data.age        = document.getElementById("myNumber").value;
     data.gender     = $("input:radio[name=gender]:checked").val();
 
-    
+
     // If even and day 1 or odd and day 2
     if ((data.subject_id%2 === 0 && data.day === 1) || (data.subject_id%2 !== 0 && data.day === 2 )){
         setContext(0);
@@ -454,15 +454,15 @@ function loadSubjectData(){
 
 function setContext(context){
     if (context === 0){
-        imgFill = "#70ADC9"; 
+        imgFill = "#70ADC9";
         imgWorld = "blue";
         $(".edit-button").css("background-color", "#0095dd");
-        $("html").css("background-image", 'url(images/background/bg'+data.subject_id %2+'.jpg)');
+        $("html").css("background-image", 'url(../images/background/bg'+data.subject_id %2+'.jpg)');
     } else if (context === 1){
         imgFill = "#CA7270";
         imgWorld = "red";
         $(".edit-button").css("background-color", "#990000");
-        $("html").css("background-image", 'url(images/background/bg'+(data.subject_id+1)%2+'.jpg)');
+        $("html").css("background-image", 'url(../images/background/bg'+(data.subject_id+1)%2+'.jpg)');
     }
 }
 
@@ -475,7 +475,7 @@ function subjectFeedback() {
     data.feedback.hardestTask = $("input:radio[name=HardestTask]:checked").val();
     data.feedback.feedbackComments = document.getElementById("feedbackComments").value;
     endExp();
-}   
+}
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Passive exposure task
@@ -502,26 +502,26 @@ function PassiveExposure(){
 function instructPassiveExposure() {
     // New data structure
     data.passiveExposure[data.passiveExposure.length] = new PassiveExposure();
-    
+
     canvas1 = document.getElementById("Pic1PE_instr");
     ctx1 = canvas1.getContext("2d");
     ctx1.fillStyle = imgFill;
     ctx1.fillRect(0,0,200,200);
 
     var ex_obj = randomIntFromInterval(0,settings.nobj-1);
-    
+
     if (data.option[data.mirror[ex_obj]] === "70"){
-        peImg1.src = 'images/'+data.stimuli[ex_obj]+'.png';
-        peImg2.src = 'images/'+data.stimuli[ex_obj]+'_mirr.png';
+        peImg1.src = '../images/'+data.stimuli[ex_obj]+'.png';
+        peImg2.src = '../images/'+data.stimuli[ex_obj]+'_mirr.png';
     } else {
-        peImg1.src = 'images/'+data.stimuli[ex_obj]+'_mirr.png';
-        peImg2.src = 'images/'+data.stimuli[ex_obj]+'.png';
+        peImg1.src = '../images/'+data.stimuli[ex_obj]+'_mirr.png';
+        peImg2.src = '../images/'+data.stimuli[ex_obj]+'.png';
     }
-    
+
     peImg1.onload = function() {
         ctx1.drawImage(peImg1, 0,0);
     };
-        
+
     canvas2 = document.getElementById("Pic2PE_instr");
     ctx2 = canvas2.getContext("2d");
     ctx2.fillStyle = imgFill;
@@ -535,17 +535,17 @@ function instructPassiveExposure() {
 function passiveExposurePresentNewObj(){
     obj = data.passiveExposure[data.passiveExposure.length-1];
     obj.startTime = recordTime();
-    
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-    
+
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     i = Math.max(i,0);
     // Present old object
     imPEOld = document.getElementById("PicOldPE");
     imPE2 = imPEOld.getContext("2d");
     imPE2.fillStyle = imgFill;
-    imPE2.fillRect(0,0,100,100); 
+    imPE2.fillRect(0,0,100,100);
 
     // Draw preceding object in small box
     if (i !== 0){   // not on first trial - no preceding object
@@ -554,22 +554,22 @@ function passiveExposurePresentNewObj(){
             imPE2.drawImage(peImg2, 0,0, 100, 100);
         };
     }
-       
+
     // Present object 'obj' in given orientation, determine correct button press
     if (Math.random() < 0.5){
         obj.objOrient[i] = ("");
         // Determine which button is the correct one to press
-        obj.key_corr[i] = data.option[data.mirror[obj.objSeq[i]]];  
+        obj.key_corr[i] = data.option[data.mirror[obj.objSeq[i]]];
         obj.key_incorr[i] = data.option[(data.mirror[obj.objSeq[i]]+1)%2];// which orientation is associated with the left button?
     } else {
         obj.objOrient[i] = "_mirr";
         obj.key_corr[i] = data.option[(data.mirror[obj.objSeq[i]]+1)%2];        // which orientation is associated with the left button?
-        obj.key_incorr[i] = data.option[data.mirror[obj.objSeq[i]]];  
+        obj.key_incorr[i] = data.option[data.mirror[obj.objSeq[i]]];
     }
-        
+
     // Draw object
-    peImg1.src = "images/" + data.stimuli[obj.objSeq[i]] + obj.objOrient[i] + ".png";
-       
+    peImg1.src = "../images/" + data.stimuli[obj.objSeq[i]] + obj.objOrient[i] + ".png";
+
     // Present new object
     imPENew = document.getElementById("PicNewPE");
     imPE1 = imPENew.getContext("2d");
@@ -579,20 +579,20 @@ function passiveExposurePresentNewObj(){
     peImg1.onload = function() {
         imPE1.drawImage(peImg1, 0,0);
     };
-    
+
     imPENew.style.border= "5px solid #ffffff";
-    feedbackImg.src = "images/empty.png";    
-        
+    feedbackImg.src = "../images/empty.png";
+
     // Stimulus onset time
     d = new Date();
-    obj.stim_on[i] = d.getTime();  
-    
+    obj.stim_on[i] = d.getTime();
+
     // Wait for button press
     document.onkeydown = checkKey;
-}    
+}
 
 var r;
-function checkKey(e) {  
+function checkKey(e) {
     if (i < obj.trials){
         if (e.keyCode == obj.key_corr[i] || e.keyCode == obj.key_incorr[i]) {
             obj.key[i] = e.keyCode;
@@ -601,66 +601,66 @@ function checkKey(e) {
             d = new Date();
             obj.responseT[i] = d.getTime();
             obj.RT[i] = obj.responseT[i] - obj.stim_on[i];
-                
-            // Was this the correct button?    
+
+            // Was this the correct button?
             if (obj.key[i] == obj.key_corr[i]) {
                 obj.cr[i] = 1;
-                // Feedback in passive Exposure Task    
+                // Feedback in passive Exposure Task
                 imPENew.style.border= "5px solid #8CC641";
-                feedbackImg.src = "images/correct.png";
+                feedbackImg.src = "../images/correct.png";
                 obj.totalRew++;
             } else if (obj.key[i] == obj.key_incorr[i]) {
                 obj.cr[i] = -1;
                 imPENew.style.border= "5px solid #EC2028";
-                feedbackImg.src = "images/incorrect.png";
+                feedbackImg.src = "../images/incorrect.png";
                 obj.totalRew = Math.max(0,obj.totalRew-1);
-            }    
-            imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-            imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-            imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-    
+            }
+            imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+            imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+            imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
             // Move on to next object
-            i++;  
+            i++;
 
             // Choose next object. Make sure it is not a neighbour of the preceding object on the data.graph!
             r = Math.ceil(Math.random()*settings.nobj);
             while (data.graph[obj.objSeq[i-1]][r]!==1) {
                 r = Math.ceil(Math.random()*settings.nobj);
-            }     
+            }
             obj.objSeq[i] = r;
-            
-            setTimeout(function() {                
-                passiveExposurePresentNewObj(obj.objSeq[i]);  
+
+            setTimeout(function() {
+                passiveExposurePresentNewObj(obj.objSeq[i]);
             },timelag);
-            
+
             obj.RTBlock = obj.RT.reduce(add, 0);
             obj.RTBlock = Math.round(obj.RTBlock/obj.RT.length);
             obj.crBlock = Math.ceil((obj.RT.length/2 + obj.cr.reduce(add, 0)/2)/obj.RT.length * 100);
 
-            document.getElementById("displayCrBlock").innerHTML=obj.crBlock + "%";  
+            document.getElementById("displayCrBlock").innerHTML=obj.crBlock + "%";
             document.getElementById("displayRTBlock").innerHTML=obj.RTBlock + " ms";
         }
     } else {
         obj.endTime = recordTime();
         proceedInExpt();
-        
-    }        
+
+    }
 }
- 
- 
+
+
 //// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Passive navigation task
 
-var imPNOption = [], imPNContext = []; 
+var imPNOption = [], imPNContext = [];
 var imPNChosen = document.getElementById("chosenPicPN");
 var imPNChContext = imPNChosen.getContext("2d");
 var pnImg = []; pnImg[0] = new Image(); pnImg[1] = new Image(); var pnImgCh = new Image();
 var chosenObjPN;
 for (o = 0; o<2; o++){
-    imPNOption[o] = document.getElementById("Pic"+o+"PN"); 
+    imPNOption[o] = document.getElementById("Pic"+o+"PN");
     imPNContext[o] = imPNOption[o].getContext("2d");
-}   
-    
+}
+
 function PassiveNavigation(){
     this.chosenSeq  = [randomIntFromInterval(0,settings.nobj-1)]; // random start object
     this.objOrient  = [];
@@ -674,7 +674,7 @@ function PassiveNavigation(){
 }
 
 function passiveNavigationPresentNewObj() {
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(0,i);
     if (i > settings.trialsPassiveNavigation){
         proceedInExpt();
@@ -693,7 +693,7 @@ function passiveNavigationPresentNewObj() {
         obj.options[i] = [];
 
         object     = obj.chosenSeq[i];
-    
+
         document.getElementById("moveToNext").disabled = true;
         document.getElementById("moveToNext").className = "edit-button disabled";
 
@@ -704,11 +704,11 @@ function passiveNavigationPresentNewObj() {
             }
         }
         neighbour = shuffle(neighbour);
-    
+
         // Choose two options for object 1 and 2 that are neighbours on the data.graph
         obj.options[i][0] = neighbour[0];
         obj.options[i][1] = neighbour[1];
-        
+
         drawObject(0);
         drawObject(1);
 
@@ -727,18 +727,18 @@ function choosePassiveNavigation(){
         obj.earlyResponse[i] = 1;
     } else {
         obj.earlyResponse[i] = 0;
-    }    
-    
-    //     record RT 
+    }
+
+    //     record RT
     d = new Date();
     obj.responseT[i] = d.getTime();
     obj.RT[i]        = obj.responseT[i] - obj.stim_on[i];
 
     // Mark chosen object and remove other object
-    imPNContext[chosenObjPN] = imPNOption[chosenObjPN].getContext("2d");                
+    imPNContext[chosenObjPN] = imPNOption[chosenObjPN].getContext("2d");
     imPNOption[chosenObjPN].style.border= "5px solid #545454";
     imPNContext[(chosenObjPN +1) % 2].fillRect(0,0,150,150);
-    
+
     setTimeout(function() {
         i++;
         for (o = 0; o<2; o++){
@@ -748,17 +748,17 @@ function choosePassiveNavigation(){
 
         // Record chosen object
         obj.chosenSeq[i] = obj.options[i-1][chosenObjPN];
-    
-        //    Counts transitions chosen by subject & rewards with 50% probability if not rewarded before   
+
+        //    Counts transitions chosen by subject & rewards with 50% probability if not rewarded before
         if (Math.random()<0.5 && rewardTransitions[obj.chosenSeq[i-1]][obj.chosenSeq[i]] === 0){
             obj.rewardSeq[i] = 1;
             obj.totalRew++;
-            feedbackImg.src = "images/correct.png"; 
-    
+            feedbackImg.src = "../images/correct.png";
+
             rewardTransitions[obj.chosenSeq[i-1]][obj.chosenSeq[i]] = 1;
-            imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-            imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-            imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
+            imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+            imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+            imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
         }
 
         if (i > 0){
@@ -767,29 +767,29 @@ function choosePassiveNavigation(){
 
          // Mark old object as chosen object
         imPNChContext.fillStyle = imgFill;
-        imPNChContext.fillRect(0,0,100,100); 
+        imPNChContext.fillRect(0,0,100,100);
 
         // This is now the previously chosen object
         pnImgCh = pnImg[chosenObjPN];
         imPNChContext.drawImage(pnImgCh, 0,0, 100, 100);
-    
+
         // Enable 'next card' button
         document.getElementById("moveToNext").disabled = false;
-        
+
         // Disable onclick
         imPNOption[0].onclick = null;
-        imPNOption[1].onclick = null;   
+        imPNOption[1].onclick = null;
     },timelag);
 }
 
-function drawObject(o){    
+function drawObject(o){
     // Present object 'obj' in given orientation, determine correct button press
-    if (Math.random() < 0.5){        
-        obj.objOrient[i][o] = 0;        
-        pnImg[o].src = "images/" + data.stimuli[obj.options[i][o]] + ".png";
-    } else{        
-        obj.objOrient[i][o] = 1;    
-        pnImg[o].src = "images/" + data.stimuli[obj.options[i][o]] + "_mirr.png";
+    if (Math.random() < 0.5){
+        obj.objOrient[i][o] = 0;
+        pnImg[o].src = "../images/" + data.stimuli[obj.options[i][o]] + ".png";
+    } else{
+        obj.objOrient[i][o] = 1;
+        pnImg[o].src = "../images/" + data.stimuli[obj.options[i][o]] + "_mirr.png";
     }
     imPNContext[o].fillStyle = imgFill;
     imPNContext[o].fillRect(0,0,200,200);
@@ -802,11 +802,11 @@ function drawObject(o){
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Learn pairs
 var stimA = document.getElementById("Pic1A");
-var stimB = document.getElementById("Pic2A");      
+var stimB = document.getElementById("Pic2A");
 
 // To randomize stimulus pair presentation during pairwise association task
-var memCorr = document.getElementById("memCorr"); 
-var totalPairs = document.getElementById("totalPairs"); 
+var memCorr = document.getElementById("memCorr");
+var totalPairs = document.getElementById("totalPairs");
 
 function LearnPairs(){
     this.ix             = [];
@@ -823,11 +823,11 @@ function LearnPairs(){
 
 // Create random object sequences
 function setPairwiseSequence(){
-    data.learnPairs[data.learnPairs.length] = new LearnPairs();    
+    data.learnPairs[data.learnPairs.length] = new LearnPairs();
     obj = data.learnPairs[data.learnPairs.length-1];
     obj.startTime = recordTime();
-    
-    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+
+    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
     obj.maxTrials = ix.length;
     for (var i = 0; i<obj.maxTrials; i++){
         assocTestTrial = ix.pop();
@@ -841,13 +841,13 @@ function setPairwiseSequence(){
         }
         obj.ix.push(assocTestTrial);
         obj.pairA.push(pairsA[assocTestTrial]);
-        obj.pairB.push(pairsB[assocTestTrial]);   
+        obj.pairB.push(pairsB[assocTestTrial]);
     }
 };
 
 //Present object pair i from object obj
 function presentTwoObjects(){
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i++;
     if (obj.trialCounter < obj.maxTrials){
         if (Math.random() < 0.5){
@@ -855,26 +855,26 @@ function presentTwoObjects(){
         } else {
             obj.pairA_orient.push('_mirr');
         }
-        
+
         if (Math.random() < 0.5){
             obj.pairB_orient.push('');
         } else {
             obj.pairB_orient.push('_mirr');
         }
-        
-        stimA.src = "images/" + data.stimuli[obj.pairA[i]] + obj.pairA_orient[i] + ".png";
-        stimB.src = "images/" + data.stimuli[obj.pairB[i]] + obj.pairB_orient[i] + ".png";
-        
+
+        stimA.src = "../images/" + data.stimuli[obj.pairA[i]] + obj.pairA_orient[i] + ".png";
+        stimB.src = "../images/" + data.stimuli[obj.pairB[i]] + obj.pairB_orient[i] + ".png";
+
         d = new Date();
         obj.stim_on.push(d.getTime());
         obj.RT[i-1] = obj.stim_on[i]-obj.stim_on[i-1];
         obj.trialCounter++;
-        
+
         // add up values for output;
         var cr = obj.cr; cr = cr.map(cr => cr === 1 ? 1 : 0);
-        document.getElementById("crMemories").innerHTML     = cr.reduce(add, 0);  
-        document.getElementById("totalMemories").innerHTML  = cr.length;        
-        
+        document.getElementById("crMemories").innerHTML     = cr.reduce(add, 0);
+        document.getElementById("totalMemories").innerHTML  = cr.length;
+
     } else {
         proceedInExpt();
         obj.endTime = recordTime();
@@ -882,7 +882,7 @@ function presentTwoObjects(){
 };
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// Memory test 
+// Memory test
 function MemoryTest(){
     this.ix             = [];
     this.pairA          = [];
@@ -900,19 +900,19 @@ function MemoryTest(){
 }
 
 //Present object pair i from object obj
-function generateMemorySequence(){    
-    stimA.src = "images/empty.png";
-    stimB.src = "images/empty.png";
+function generateMemorySequence(){
+    stimA.src = "../images/empty.png";
+    stimB.src = "../images/empty.png";
     data.memory[data.memory.length] = new MemoryTest();
-    
+
     obj = data.memory[data.memory.length-1];
     obj.startTime = recordTime();
-    
-    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+
+    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
     nonix = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
     nonix = nonix.slice(0, ix.length);
     var totIx = ix.length + nonix.length;
-    
+
     t = 0;
     for (var i = 0; i<totIx; i++){
         if ((Math.random() < 0.5 && ix.length > 0) || nonix.length < 1){
@@ -928,7 +928,7 @@ function generateMemorySequence(){
             }
             obj.ix.push(assocTestTrial);
             obj.pairA.push(pairsA[assocTestTrial]);
-            obj.pairB.push(pairsB[assocTestTrial]);    
+            obj.pairB.push(pairsB[assocTestTrial]);
 
         } else {
             obj.paired.push(0);
@@ -941,12 +941,12 @@ function generateMemorySequence(){
             }
             obj.ix.push(assocTestTrial);
             obj.pairA.push(nonPairsA[assocTestTrial]);
-            obj.pairB.push(nonPairsB[assocTestTrial]);   
+            obj.pairB.push(nonPairsB[assocTestTrial]);
         }
     }
     obj.maxTrials = obj.ix.length;
 }
-    
+
 function recordMemoryResponse(response){
     $('button').prop('disabled', true);
     if (i > -1){
@@ -956,17 +956,17 @@ function recordMemoryResponse(response){
         if (response === 0 && obj.paired[i] == 0 || response === 1 && obj.paired[i] == 1){
             obj.cr.push(1);
             obj.totalRew++;
-            feedbackImg.src = "images/correct.png";    
+            feedbackImg.src = "../images/correct.png";
         } else {
             obj.cr.push(-1);
             obj.totalRew = Math.max(0,obj.totalRew-1);
-            feedbackImg.src = "images/incorrect.png";   
-        } 
+            feedbackImg.src = "../images/incorrect.png";
+        }
     }
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-        
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     setTimeout(function() {
         // move on
         $('button').prop('disabled', false);
@@ -974,7 +974,7 @@ function recordMemoryResponse(response){
     },timelag);
 }
 
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Shuffle object pairs
 var targetObj = document.getElementById("targetFP");
 var imgOption = [];
@@ -998,98 +998,98 @@ function FindPartner(){
     this.totalRew       = [];
 }
 
-var objLoc = [0,1,2]; 
+var objLoc = [0,1,2];
 
-// Present pairwise associations 
+// Present pairwise associations
 function findPartner(){
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(i,0);
     if (i === 0) {
-        data.findPartner[data.findPartner.length] = new FindPartner();    
-        obj = data.findPartner[data.findPartner.length-1]; 
+        data.findPartner[data.findPartner.length] = new FindPartner();
+        obj = data.findPartner[data.findPartner.length-1];
         obj.startTime = recordTime();
         obj.ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
         obj.maxTrials = obj.ix.length;
     }
-    
+
     if (i < obj.maxTrials){
-         
+
         // Randomize object locations
         obj.location[i]     = shuffle(objLoc);
         obj.otherObj[i]     = [];
-        
+
         // Target object and partner object
         obj.target[i]       = pairsA[obj.ix[i]];
         obj.otherObj[i][0]  = pairsB[obj.ix[i]];        // The 0th object corresponds to the correct partner
-        
+
         // Display target object
-        targetObj.src       = (Math.random() < 0.5) ? "images/" + data.stimuli[obj.target[i]] + ".png" : "images/" + data.stimuli[obj.target[i]] + "_mirr.png";
-        
+        targetObj.src       = (Math.random() < 0.5) ? "../images/" + data.stimuli[obj.target[i]] + ".png" : "../images/" + data.stimuli[obj.target[i]] + "_mirr.png";
+
         // Objects 1 and 2 are distractor objects
         obj.otherObj[i][1] = Math.floor(Math.random()*settings.nobj);
-        while (data.dist[obj.target[i]][obj.otherObj[i][1]]===1 || obj.otherObj[i][1] === obj.target[i] 
+        while (data.dist[obj.target[i]][obj.otherObj[i][1]]===1 || obj.otherObj[i][1] === obj.target[i]
                 || obj.otherObj[i][1] === obj.otherObj[i][0]  ) {
             obj.otherObj[i][1] = Math.floor(Math.random()*settings.nobj);
-        } 
-        
+        }
+
         obj.otherObj[i][2] = Math.floor(Math.random()*settings.nobj);
-        while (data.dist[obj.target[i]][obj.otherObj[i][2]]===1 || obj.otherObj[i][2] === obj.target[i] 
+        while (data.dist[obj.target[i]][obj.otherObj[i][2]]===1 || obj.otherObj[i][2] === obj.target[i]
                 || obj.otherObj[i][2] === obj.otherObj[i][0] || obj.otherObj[i][2] === obj.otherObj[i][1]) {
             obj.otherObj[i][2] = Math.floor(Math.random()*settings.nobj);
-        } 
-        
+        }
+
         // draw target image, make sure the object location is randomized
         for(var pos=0; pos<3; pos++){
 //            Which object is in this position?
             var a = [0, 1, 2].indexOf(obj.location[i][pos]);
-            imgOption[pos].src = (Math.random() < 0.5) ? "images/" + data.stimuli[obj.otherObj[i][a]] + ".png" : "images/" + data.stimuli[obj.otherObj[i][a]] + "_mirr.png";            
+            imgOption[pos].src = (Math.random() < 0.5) ? "../images/" + data.stimuli[obj.otherObj[i][a]] + ".png" : "../images/" + data.stimuli[obj.otherObj[i][a]] + "_mirr.png";
         }
         d = new Date();
         obj.stimPres[i] = d.getTime();
-    
+
     } else {
         proceedInExpt();
         obj.endTime = recordTime();
-    } 
+    }
 }
 
 function findPartnerChooseObj(findPartnerChoice){
 // Which object did the subject choose?
     obj.chosenPos[i] = findPartnerChoice;
     obj.chosenObj[i] = obj.otherObj[i][findPartnerChoice];
-    
+
     // Was this the correct object? (i.e. 0th position in terms of obj.location)?
     if (obj.location[i][findPartnerChoice] === 0){
         obj.cr[i] = 1;
         obj.totalRew++;
-        feedbackImg.src = "images/correct.png"; 
+        feedbackImg.src = "../images/correct.png";
     } else {
         obj.cr[i] = -1;
         obj.totalRew = Math.max(0,obj.totalRew-1);
-        feedbackImg.src = "images/incorrect.png"; 
+        feedbackImg.src = "../images/incorrect.png";
     }
-    
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew ,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew -50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew -100,50),0) + "coins.png"; 
-    
+
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew ,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew -50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew -100,50),0) + "coins.png";
+
 //    Make the other two objects disappear
     for(var pos=0; pos<3; pos++){
         if (pos !== findPartnerChoice){
-            imgOption[pos].src = "images/empty.png";
+            imgOption[pos].src = "../images/empty.png";
         }
     }
-    
+
     // Record RTs
     d = new Date();
     obj.responseT[i] = d.getTime();
-    obj.RT[i] = obj.responseT[i] - obj.stimPres[i];  
-    
+    obj.RT[i] = obj.responseT[i] - obj.stimPres[i];
+
     i++;
-    
-    document.getElementById("crFindPartnerMemories").innerHTML      = obj.RT.length/2 + obj.cr.reduce(add, 0)/2;  
-    document.getElementById("totalFindPartnerMemories").innerHTML   = obj.cr.length;         
-    
+
+    document.getElementById("crFindPartnerMemories").innerHTML      = obj.RT.length/2 + obj.cr.reduce(add, 0)/2;
+    document.getElementById("totalFindPartnerMemories").innerHTML   = obj.cr.length;
+
     setTimeout(function() {
         // move on
         findPartner();
@@ -1098,7 +1098,7 @@ function findPartnerChooseObj(findPartnerChoice){
 
 //// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Goal navigation task
- 
+
 function GoalNavigation(){
     this.chosenSeq      = [[]];
     this.objOrient      = [];               // Chosen object orientation
@@ -1116,7 +1116,7 @@ function GoalNavigation(){
 
 var step = 0;
 
-var imGNOptionCanvas  = []; 
+var imGNOptionCanvas  = [];
 var targetImgGN = new Image(); var imgOldGN = new Image();
 var imGNOptionCtx = [];
 
@@ -1125,12 +1125,12 @@ var targetPicGNCtx  = targetPicGNCanvas.getContext("2d");
 var chosenPicGNCanvas    = document.getElementById("chosenPicGN");
 var chosenPicGNCtx  = chosenPicGNCanvas.getContext("2d");
 for (o = 0; o < 2; o++){
-    imGNOptionCanvas[o]   = document.getElementById("Pic"+o+"GN"); 
+    imGNOptionCanvas[o]   = document.getElementById("Pic"+o+"GN");
     imGNOptionCtx[o]   = imGNOptionCanvas[o].getContext("2d");
 }
 
 var imGNOptionCanvas, imGNOptionCtx;
-var distFromTarget, next, thisO, distractorO; 
+var distFromTarget, next, thisO, distractorO;
 var imgOptionGN = []; imgOptionGN[0] = new Image(); imgOptionGN[1] = new Image();
 
 var leftOverNonix = [];
@@ -1140,16 +1140,16 @@ var currentProgress = 0;
 $( "#progressbar" ).progressbar({
     value: 0
 });
-   
+
 function initializeTaskGoalNavigation() {
     i = Math.max(0,i);
-    
+
     data.goalNavigation[data.goalNavigation.length] = new GoalNavigation;
     obj = data.goalNavigation[data.goalNavigation.length-1];
     obj.startTime = recordTime();
     if (leftOverNonix.length >= obj.maxTrials){
         obj.nonix = leftOverNonix;
-    } else {   
+    } else {
         obj.nonix = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
     }
     for (var ix = 0; ix < obj.maxTrials; ix++ ) {
@@ -1169,17 +1169,17 @@ var neighbour;
 function displayGoalNavigation() {
     if (i >= obj.maxTrials || i > obj.nonix.length-1){
         var counter = 0;
-        for (o = i; o<obj.nonix.length; o++){    
+        for (o = i; o<obj.nonix.length; o++){
             leftOverNonix[counter] = obj.nonix[o];
             counter++;
         }
         proceedInExpt();
         obj.endTime = recordTime();
-    } else if (i < obj.maxTrials && step === 0){        
+    } else if (i < obj.maxTrials && step === 0){
         currentProgress = 0;
-        progressCoins.src = "images/coins/0coins.png";         
+        progressCoins.src = "../images/coins/0coins.png";
         $( "#progressbar" ).progressbar( "option", "value", currentProgress);
-        
+
         obj.chosenSeq[i][step]  = [];
         obj.objOrient[i][step]  = [];
         obj.options[i][step]    = [];
@@ -1190,14 +1190,14 @@ function displayGoalNavigation() {
             obj.options[i][step][ox] = [];
         }
         targetPicGNCtx.fillStyle = imgFill;
-        targetPicGNCtx.fillRect(0,0,100,100); 
+        targetPicGNCtx.fillRect(0,0,100,100);
 
         chosenPicGNCtx.fillStyle = imgFill;
-        chosenPicGNCtx.fillRect(0,0,100,100); 
-        
+        chosenPicGNCtx.fillRect(0,0,100,100);
+
         for (o = 0; o < 2; o++){
             imGNOptionCtx[o].fillStyle = imgFill;
-            imGNOptionCtx[o].fillRect(0,0,150,150); 
+            imGNOptionCtx[o].fillRect(0,0,150,150);
         }
 
         // Pick a new start and target object
@@ -1206,13 +1206,13 @@ function displayGoalNavigation() {
 
         setTimeout(function() {
             if (Math.random() < 0.5){
-                imgOldGN.src = "images/" + data.stimuli[obj.chosenSeq[i][step]] + ".png";
+                imgOldGN.src = "../images/" + data.stimuli[obj.chosenSeq[i][step]] + ".png";
             } else {
-                imgOldGN.src = "images/" + data.stimuli[obj.chosenSeq[i][step]] + "_mirr.png";}
+                imgOldGN.src = "../images/" + data.stimuli[obj.chosenSeq[i][step]] + "_mirr.png";}
             if (Math.random() < 0.5){
-                targetImgGN.src = "images/" + data.stimuli[obj.target[i]] + ".png";
+                targetImgGN.src = "../images/" + data.stimuli[obj.target[i]] + ".png";
             } else {
-                targetImgGN.src = "images/" + data.stimuli[obj.target[i]] + "_mirr.png";}
+                targetImgGN.src = "../images/" + data.stimuli[obj.target[i]] + "_mirr.png";}
         }, timelag);
     }
     targetImgGN.onload = function(){
@@ -1223,14 +1223,14 @@ function displayGoalNavigation() {
         chosenPicGNCtx.drawImage(imgOldGN, 0,0, 100, 100);
     };
 
-    if (step === 0){ 
+    if (step === 0){
         obj.toWinOnThisTrial[i][step] = data.dist[obj.target[i]][obj.chosenSeq[i][0]] ;
     }
     if (step !== 0){
         progressStepSize = 100/obj.toWinOnThisTrial[i][0];
-        progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
+        progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
     }
-        
+
     // Find one object that is on the way to the target and pick an additional distractor object
     data.distFromTarget = []; for (var j=0; j<6; j++){data.distFromTarget[j] = [];};
     for (j = 0; j < settings.nobj; j++){
@@ -1275,7 +1275,7 @@ function displayGoalNavigation() {
     } else {
         obj.options[i][step][1] = next; thisO = 1; distractorO = 0;
     }
-    
+
     neighbour = [];
     for(j = 0; j < settings.nobj; j++){
         if (data.dist[obj.chosenSeq[i][step]][j] === 1 && j !== next){
@@ -1283,8 +1283,8 @@ function displayGoalNavigation() {
         }
     }
     neighbour = shuffle(neighbour);
-    
-    // Pick a second distractor object    
+
+    // Pick a second distractor object
     obj.options[i][step][distractorO] = neighbour[0];
     if (obj.chosenSeq[i][step] === obj.target[i]){
         data.totalReward += Math.max(0,obj.toWinOnThisTrial[i][step]);
@@ -1292,45 +1292,45 @@ function displayGoalNavigation() {
         step = 0;
         setTimeout(function(){
             displayGoalNavigation();
-        }, timelag);        
-    } else { 
+        }, timelag);
+    } else {
         setTimeout(function() {
             drawOption(0);
             drawOption(1);
             progressStepSize = 100/obj.toWinOnThisTrial[i][0];
-            progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
-     
+            progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
+
             d = new Date();
             obj.stim_on[i][step] = d.getTime();
         }, timelag);
     }
-}   
+}
 
 function drawOption(ox){
     imGNOptionCtx[ox].fillStyle = imgFill;
-    imGNOptionCtx[ox].fillRect(0,0,150,150); 
+    imGNOptionCtx[ox].fillRect(0,0,150,150);
 
     // Present object 'obj' in given orientation, determine correct button press
-    if (Math.random() < 0.5){        
-        imgOptionGN[ox].src = "images/" + data.stimuli[obj.options[i][step][ox]] + ".png";
-    } else{        
-        imgOptionGN[ox].src = "images/" + data.stimuli[obj.options[i][step][ox]] + "_mirr.png";
+    if (Math.random() < 0.5){
+        imgOptionGN[ox].src = "../images/" + data.stimuli[obj.options[i][step][ox]] + ".png";
+    } else{
+        imgOptionGN[ox].src = "../images/" + data.stimuli[obj.options[i][step][ox]] + "_mirr.png";
     }
     imgOptionGN[ox].onload = function() {
         imGNOptionCtx[ox].drawImage(imgOptionGN[ox], 0,0, 150, 150);
     };
-    imGNOptionCanvas[ox].onclick = function(){chooseGN(ox);};    
+    imGNOptionCanvas[ox].onclick = function(){chooseGN(ox);};
 }
 
 function chooseGN(chosenObjGoalNavigation){
     // record RT
     d = new Date();
-    obj.responseT[i][step] = d.getTime();    
+    obj.responseT[i][step] = d.getTime();
     obj.RT[i][step] = obj.responseT[i][step] - obj.stim_on[i][step];
-    
+
     imGNOptionCanvas[0].onclick = null;
-    imGNOptionCanvas[1].onclick = null;  
-        
+    imGNOptionCanvas[1].onclick = null;
+
     // Record response;
     step++;
     obj.chosenSeq[i][step]  = [];
@@ -1343,15 +1343,15 @@ function chooseGN(chosenObjGoalNavigation){
         obj.options[i][step][ox] = [];
     }
     obj.chosenSeq[i][step] = obj.options[i][step-1][chosenObjGoalNavigation];
-    
+
     // Make other object disappear
     imGNOptionCtx[(chosenObjGoalNavigation+1)%2].fillRect(0,0,150,150);
-    
-    if (data.dist[obj.target[i]][obj.options[i][step-1][chosenObjGoalNavigation]] > 
+
+    if (data.dist[obj.target[i]][obj.options[i][step-1][chosenObjGoalNavigation]] >
         data.dist[obj.target[i]][obj.options[i][step-1][(chosenObjGoalNavigation + 1)%2]]){
         obj.rewardSeq[i][step] = -1;
         if (settings.displayFeedback){
-            currentProgress -= progressStepSize;           
+            currentProgress -= progressStepSize;
             obj.toWinOnThisTrial[i][step] = obj.toWinOnThisTrial[i][step-1]-1;
         }
     } else {
@@ -1360,22 +1360,22 @@ function chooseGN(chosenObjGoalNavigation){
             currentProgress += progressStepSize;
             obj.toWinOnThisTrial[i][step] = obj.toWinOnThisTrial[i][step-1];
         }
-    }  
-    progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
-    $("#progressbar").progressbar( "option", "value", currentProgress); 
-    
-    setTimeout(function() {            
-        imGNOptionCtx[chosenObjGoalNavigation].fillRect(0,0,150,150); 
-        chosenPicGNCtx.fillRect(0,0,100,100); 
+    }
+    progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
+    $("#progressbar").progressbar( "option", "value", currentProgress);
+
+    setTimeout(function() {
+        imGNOptionCtx[chosenObjGoalNavigation].fillRect(0,0,150,150);
+        chosenPicGNCtx.fillRect(0,0,100,100);
 
         // Move chosen image to chosen image position
         chosenPicGNCtx.drawImage(imgOptionGN[chosenObjGoalNavigation], 0,0, 100, 100);
-        feedbackImg2.src = "images/empty.png";    
-        progressCoins.src = "images/empty.png";     
+        feedbackImg2.src = "../images/empty.png";
+        progressCoins.src = "../images/empty.png";
     }, timelag);
 
     setTimeout(function(){
-        displayGoalNavigation();  
+        displayGoalNavigation();
     },timelag);
 }
 
@@ -1397,9 +1397,9 @@ function ObjectDifference(){
     this.totalRew   = 0;
     this.earlyResponse = [];
 }
-       
+
 function objectDifferencePresentNewObj() {
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(0,i);
     if (i > data.trialsObjectDifference){
         proceedInExpt();
@@ -1407,10 +1407,10 @@ function objectDifferencePresentNewObj() {
     } else {
         // Mark old object as chosen object
         imPNChContext.fillStyle = imgFill;
-        imPNChContext.fillRect(0,0,100,100); 
+        imPNChContext.fillRect(0,0,100,100);
 
         for (o = 0; o<2; o++){
-            imPNContext[o].fillStyle = imgFill;        
+            imPNContext[o].fillStyle = imgFill;
             imPNContext[o].fillRect(0,0,150,150);
             imPNOption[o].style.border= "5px solid #ffffff";
         }
@@ -1426,43 +1426,43 @@ function objectDifferencePresentNewObj() {
         obj.options[i]      = [];
         obj.target[i]       = randomIntFromInterval(0,settings.nobj-1);
         object              = obj.target[i];
-    
+
         document.getElementById("moveToNext").style.display = "none";
 
         // Choose two options for object 1 and 2 that are neighbours on the data.graph
         obj.options[i][0] =  randomIntFromInterval(0,settings.nobj-1);
         while (obj.options[i][0] === object) {
             obj.options[i][0] = randomIntFromInterval(0,settings.nobj-1);
-        } 
+        }
 
         obj.options[i][1] = randomIntFromInterval(0,settings.nobj-1);
         while (obj.options[i][1] === object || obj.options[i][1] === obj.options[i][0] ||
                 data.dist[obj.options[i][0]][object] === data.dist[obj.options[i][1]][object]) {
             obj.options[i][1] = randomIntFromInterval(0,settings.nobj-1);
-        } 
+        }
 
         obj.dist[i][0] = data.dist[obj.options[i][0]][object];
         obj.dist[i][1] = data.dist[obj.options[i][1]][object];
         obj.dist[i][2] = data.dist[obj.options[i][0]][obj.options[i][1]];
-        
-        if (Math.random() < 0.5){        
-            obj.target_orient[i] = 0;        
-            pnImgCh.src = "images/" + data.stimuli[obj.target[i]] + ".png";
-        } else{        
-            obj.target_orient[i] = 1;    
-            pnImgCh.src = "images/" + data.stimuli[obj.target[i]] + "_mirr.png";
-        }    
-        
+
+        if (Math.random() < 0.5){
+            obj.target_orient[i] = 0;
+            pnImgCh.src = "../images/" + data.stimuli[obj.target[i]] + ".png";
+        } else{
+            obj.target_orient[i] = 1;
+            pnImgCh.src = "../images/" + data.stimuli[obj.target[i]] + "_mirr.png";
+        }
+
         pnImgCh.onload = function() {
             imPNChContext.drawImage(pnImgCh, 0,0,100,100);
         };
-        
+
         drawObject(0);
         drawObject(1);
-        
+
         d = new Date();
         obj.stim_on[i] = d.getTime();
-        
+
         imPNOption[0].onclick = function(){chosenObjPN = 0; chooseObjectDifference();};
         imPNOption[1].onclick = function(){chosenObjPN = 1; chooseObjectDifference();};
     }
@@ -1471,46 +1471,44 @@ function objectDifferencePresentNewObj() {
 function chooseObjectDifference(){
     // Disable onclick
     imPNOption[0].onclick = null;
-    imPNOption[1].onclick = null; 
-        
-    // Record RT 
+    imPNOption[1].onclick = null;
+
+    // Record RT
     d = new Date();
     obj.responseT[i] = d.getTime();
     obj.RT[i]        = obj.responseT[i] - obj.stim_on[i];
     obj.chosenObj[i] = obj.options[i][chosenObjPN];
-    
+
     if (obj.dist[i][chosenObjPN] < obj.dist[i][(chosenObjPN + 1)%2]){
         if (settings.displayFeedback){
             imPNOption[chosenObjPN].style.border= "5px solid green";
-            feedbackImg.src = "images/correct.png"; 
+            feedbackImg.src = "../images/correct.png";
         } else {
-            imPNOption[chosenObjPN].style.border= "5px solid black";            
-        }       
+            imPNOption[chosenObjPN].style.border= "5px solid black";
+        }
         obj.rewardSeq[i] = 1;
-        obj.totalRew++;            
+        obj.totalRew++;
     } else {
         if (settings.displayFeedback){
             imPNOption[chosenObjPN].style.border= "5px solid red";
-            feedbackImg.src = "images/incorrect.png"; 
+            feedbackImg.src = "../images/incorrect.png";
         } else {
             imPNOption[chosenObjPN].style.border= "5px solid black";
-        }  
+        }
         obj.rewardSeq[i] = -1;
-        obj.totalRew = Math.max(0,obj.totalRew-1);          
+        obj.totalRew = Math.max(0,obj.totalRew-1);
     }
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-          
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     setTimeout(function() {
         i++;
-        
+
         objectDifferencePresentNewObj();
     },timelag);
-}/* 
+}/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-

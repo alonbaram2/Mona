@@ -6,10 +6,10 @@
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Definition of variables
-// 
+//
 //"use strict";
 var d = new Date();
-var d_pres = new Date(); 
+var d_pres = new Date();
 var d_button = new Date();
 var canvas, ctx1, ctx2;
 var peImg1 = new Image();
@@ -22,14 +22,14 @@ var object, map, stimuli, contextOrder;
 
 // initialize random number generator
 var mn = Math.floor(mn/2);
-var i, t, nr, o, ix = [], nonix = []; 
+var i, t, nr, o, ix = [], nonix = [];
 for (nr === 0; nr < mn; nr++){
    Math.random();
 }
-var backGroundImage0 = new Image(); 
-var backGroundImage1 = new Image(); 
- 
-// Is this participant recruited from prolific? 
+var backGroundImage0 = new Image();
+var backGroundImage1 = new Image();
+
+// Is this participant recruited from prolific?
 var canvas1, canvas2, ctx1, ctx2, imPE2, imPE1;
 var imgEx0 = new Image(); var imgEx1 = new Image(); var imgEx2 = new Image();
 
@@ -42,7 +42,7 @@ var feedbackImg2 = document.getElementById("feedbackAtButtonPress2");
 var progressCoins = document.getElementById("progressCoins");
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// General functions 
+// General functions
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -80,7 +80,7 @@ function saveData() {
         async: false,
         data: JSONstring
     });
-    
+
     var timeLinePath = dir + "/data/Subj"+ data.participantId + "_session" + data.session + "_day" + settings.day + settings.version + "_timeLine.JSON";
     var timeLineString = JSON.stringify(exptTimeLine);
 
@@ -93,19 +93,19 @@ function saveData() {
     });
 }
 
-// Ask subjects for prolific ID if they say they have one   
+// Ask subjects for prolific ID if they say they have one
 function enterProlific(){
     var rad = document.myForm.prolificParticipant;
     for(var i = 0; i < rad.length; i++) {
         rad[i].onclick = function() {
             if (this.value === "yes"){
-                $('#enterProlificIDDay1').show();    
+                $('#enterProlificIDDay1').show();
                 data.prolificPart = true;
                 data.prolificTick = true;
             } else {
                 $('#enterProlificIDDay1').hide();
                 data.prolificPart = false;
-                data.prolificTick = false;                    
+                data.prolificTick = false;
             };
 
         };
@@ -114,9 +114,9 @@ function enterProlific(){
 
 // Preload background images
 function preloader() {
-    backGroundImage0.src = "images/background/bg0.jpg";
-    backGroundImage1.src = "images/background/bg1.jpg";  
-    
+    backGroundImage0.src = "../images/background/bg0.jpg";
+    backGroundImage1.src = "../images/background/bg1.jpg";
+
      // counter
      var ex_obj = 0;
 
@@ -124,9 +124,9 @@ function preloader() {
      imageObj = new Image();
 
      // start preloading
-     for(ex_obj=0; ex_obj<=settings.nobj; ex_obj++) 
+     for(ex_obj=0; ex_obj<=settings.nobj; ex_obj++)
      {
-        imageObj.src= 'images/'+data.stimuli[map][ex_obj]+'.png';
+        imageObj.src= '../images/'+data.stimuli[map][ex_obj]+'.png';
      }
 }
 
@@ -134,7 +134,7 @@ function preloader() {
 // Experimental time line
 function startExperiment(){
     data.startTime = d.getTime();
-        
+
     if(settings.fullscreen){
         var element = document.documentElement;
         if (element.requestFullscreen) {
@@ -157,7 +157,7 @@ function TimeLine(toShow, toHide, toRun, maxCoins){
     this.toRun      = toRun;
     this.maxCoins   = maxCoins;
     this.toStart;
-    this.toEnd; 
+    this.toEnd;
 }
 
 var exptTimeLine = [];
@@ -165,12 +165,12 @@ var runThrough  = -1;
 
 // Start
 window.onload = function () {
-    $("startN").show(); 
+    $("startN").show();
     $("#proceed").hide();
     $("startButton").show();
     if (settings.fullscreen) {
-        $("#yesFullScreen").show(); 
-    } 
+        $("#yesFullScreen").show();
+    }
 };
 
 var consent         = new TimeLine(["consent"], [], [],0);
@@ -493,80 +493,80 @@ var maxCoins = 0;
 for (h = 0; h < exptTimeLine.length; h++){
     maxCoins += exptTimeLine[h].maxCoins;
 }
-console.log("Maximum number of coins: " + maxCoins);   
+console.log("Maximum number of coins: " + maxCoins);
 
 function doNothing(){}
 
 function recordTime(){
     d = new Date();
-    return d.getTime() - data.startTime;    
+    return d.getTime() - data.startTime;
 }
 
 // Run through experimental timeline
 function proceedInExpt(){
-    runThrough++;    
+    runThrough++;
     i = -1;
     exptTimeLine[runThrough].toStart = d.getTime();
-    
-    imRew1.src = "images/coins/0coins.png"; 
-    imRew2.src = "images/coins/0coins.png"; 
-    imRew3.src = "images/coins/0coins.png"; 
-    
-    feedbackImg.src = "images/empty.png";    
-    
+
+    imRew1.src = "../images/coins/0coins.png";
+    imRew2.src = "../images/coins/0coins.png";
+    imRew3.src = "../images/coins/0coins.png";
+
+    feedbackImg.src = "../images/empty.png";
+
     document.onkeydown = doNothing; // if a key is pressed
-            
+
     $("div").hide(); $("button").hide();
     if (!settings.hideSkipButton){
         $("#skip-button").show();
     }
-    
+
     for (var c = 0; c<exptTimeLine[runThrough].toShow.length; c++){
         $("#" + exptTimeLine[runThrough].toShow[c]).show().children().show();
-    }    
+    }
     for (var c = 0; c<exptTimeLine[runThrough].toHide.length; c++){
         $("#" + exptTimeLine[runThrough].toHide[c]).hide();
-    }    
+    }
     for (var c = 0; c<exptTimeLine[runThrough].toRun.length; c++){
         exptTimeLine[runThrough].toRun[c]();
     }
-    
+
     if (settings.day === 3){
         $(".textDay3").show();
     }else {
         $(".textDay3").hide();
     }
     // Display reward
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";   
-    
-    document.getElementById("displayRewardsBlock").innerHTML = obj.totalRew;  
-    
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
+    document.getElementById("displayRewardsBlock").innerHTML = obj.totalRew;
+
     data.timeLine[runThrough]   = exptTimeLine[runThrough].toShow[0];
 }
 
 function endExp() {
     subjectFeedback();
     d = new Date();
-            
+
     data.experimentDuration = d.getTime() - data.startTime;
     saveData();
     document.getElementById("totalCollectedReward").innerHTML   = data.totalReward;
     document.getElementById("bonus").innerHTML                  = (data.totalReward/100).toFixed(2);
-    
+
     if (data.prolificPart === false){
         $("#submitToProlific").text("You can now close the browser to exit the experiment.");
-    };      
-    
+    };
+
 //    if (data.totalReward > settings.perfCriterion && data.prolificPart === true && settings.day !== 3){
-//        $("#inviteForFollowUp").show(); 
+//        $("#inviteForFollowUp").show();
 //        $("#inviteForFollowUp2").show();
 //    }
     data.exptTimeLine = exptTimeLine;
 }
 
-function loadStimuli(mapID){    
+function loadStimuli(mapID){
     //  Load subject-specific stimuli
     var xhttp;
     if (window.XMLHttpRequest) {
@@ -586,7 +586,7 @@ function loadStimuli(mapID){
         }
       }
     };
-    
+
     if (mapID === 0){
         console.log(mapID);
         if (settings.scan){
@@ -595,45 +595,45 @@ function loadStimuli(mapID){
         else {
             xhttp.open("GET", "stimuli/map" + mapID + "/" + settings.graphStructure + "/" + (data.subject_id % 25 + 1) + "/r_" + (''+data.subject_id)[0] + ".txt", true);
         }
-    } else { 
+    } else {
         console.log(mapID);
         if (settings.scan){
             xhttp.open("GET", "stimuli/scan/Subj_" + data.subject_id + "/Subj_" + data.subject_id + "_map" + (mapID + 1) + "_stimuli.txt", true);
         }
         else {
             xhttp.open("GET", "stimuli/map" + mapID + "/" + settings.graphStructure + "/" + (data.subject_id % 25 + 1) + "/r_" + (''+data.subject_id)[0] + "_var_" + (''+data.subject_id)[1]+".txt", true);
-        }    
+        }
     }
-    xhttp.send();  
+    xhttp.send();
 }
 
 function setContext(context){
     if (context === 0){
-        imgFill = "#70ADC9"; 
+        imgFill = "#70ADC9";
         imgWorld = "blue";
         $(".edit-button").css("background-color", "#0095dd");
-        $("html").css("background-image", 'url(images/background/bg0.jpg)');
+        $("html").css("background-image", 'url(../images/background/bg0.jpg)');
     } else if (context === 1){
         imgFill = "#CA7270";
         imgWorld = "red";
         $(".edit-button").css("background-color", "#990000");
-        $("html").css("background-image", 'url(images/background/bg1.jpg)');
+        $("html").css("background-image", 'url(../images/background/bg1.jpg)');
     } else if (context === 100){
         imgWorld = "";
         $(".edit-button").css("background-color", "#545454");
-        $("html").css("background-image", 'url(images/empty.png)');
+        $("html").css("background-image", 'url(../images/empty.png)');
     }
 }
 
 
-function loadSubjectData(){   
-       
+function loadSubjectData(){
+
     if (settings.day ===2) {
-        $("#Introday2_noMaps" + settings.numberOfMaps).show();     
+        $("#Introday2_noMaps" + settings.numberOfMaps).show();
     } else if (settings.day > 2){
-        $("#Introday3").show();    
+        $("#Introday3").show();
     }
-    
+
     // Convert to numerical ID
     data.participantId = document.getElementById("prolificId").value;
     data.session = document.getElementById("session").value;
@@ -655,11 +655,11 @@ function loadSubjectData(){
             data.subject_id=Number(data.participantId[0]);
     }
     }
-    
+
     if (data.participantId.length === 0){
         data.participantId = data.subject_id;
     }
-    
+
     if (settings.day === 1){
         map = 0;
     } else if (settings.day === 2 && settings.numberOfMaps === 1){
@@ -670,13 +670,13 @@ function loadSubjectData(){
         map = 0;
         loadStimuli(map);
         map = 1;
-    }   
+    }
     loadStimuli(map);
-    
+
     if (settings.day === 2 && settings.numberOfMaps > 1){
         document.getElementById("newDay").innerHTML = "Please note:<br>These associations are not the same as the ones you learned yesterday, so don't get confused!<br><br>";
-    } 
-    
+    }
+
     data.option = [];
     data.option[0] = ((data.subject_id % 2) === 0) ? "70" : "74";
     data.option[1] = ((data.subject_id % 2) === 0) ? "74" : "70";
@@ -684,14 +684,14 @@ function loadSubjectData(){
     data.age        = document.getElementById("myNumber").value;
     data.gender     = $("input:radio[name=gender]:checked").val();
 
-    
+
     // make sure that half the subject get red on day 1 and blue on day 2 and the other way around
     if (data.subject_id%2 === 0){
         contextOrder = [0, 1];
     } else {
         contextOrder = [1, 0];
     }
-    
+
     if (settings.day < 3){
         setContext(contextOrder[map]);
         document.getElementById("whichWorld").innerHTML = "Today you are in the " + imgWorld + " world";
@@ -710,7 +710,7 @@ function subjectFeedback() {
     data.feedback.hardestTask = $("input:radio[name=HardestTask]:checked").val();
     data.feedback.feedbackComments = document.getElementById("feedbackComments").value;
     saveData();
-}   
+}
 
 // fill canvas
 function fillCanvs(canvasContext,size,callback){
@@ -745,30 +745,30 @@ function PassiveExposure(){
 function instructPassiveExposure() {
     // New data structure
     data.passiveExposure[data.passiveExposure.length] = new PassiveExposure();
-    
+
     var ex_obj = randomIntFromInterval(0,settings.nobj-1);
-    
+
     canvas1 = document.getElementById("Pic1PE_instr");
     ctx1 = canvas1.getContext("2d");
-    
+
     canvas2 = document.getElementById("Pic2PE_instr");
     ctx2 = canvas2.getContext("2d");
-    
+
     if (data.option[data.mirror[ex_obj]] === "70"){
-        peImg1.src = 'images/'+data.stimuli[map][ex_obj]+'.png';
-        peImg2.src = 'images/'+data.stimuli[map][ex_obj]+'_mirr.png';
+        peImg1.src = '../images/'+data.stimuli[map][ex_obj]+'.png';
+        peImg2.src = '../images/'+data.stimuli[map][ex_obj]+'_mirr.png';
     } else {
-        peImg1.src = 'images/'+data.stimuli[map][ex_obj]+'_mirr.png';
-        peImg2.src = 'images/'+data.stimuli[map][ex_obj]+'.png';
+        peImg1.src = '../images/'+data.stimuli[map][ex_obj]+'_mirr.png';
+        peImg2.src = '../images/'+data.stimuli[map][ex_obj]+'.png';
     }
-    
+
     $(document).ready(function(){
         fillCanvs(ctx1,[200,200],function(){
             peImg1.onload = function() {
                 ctx1.drawImage(peImg1, 0,0);
             };
-        });    
-    
+        });
+
         fillCanvs(ctx2,[200,200],function(){
             peImg2.onload = function() {
                 ctx2.drawImage(peImg2, 0,0);
@@ -786,16 +786,16 @@ function passiveExposurePresentNewObj(){
         obj.context =(Array.apply(null, Array(settings.trialsPassiveExposure/2)).map(Number.prototype.valueOf,0));
         obj.context = shuffle(obj.context.concat(Array.apply(null, Array(settings.trialsPassiveExposure/2)).map(Number.prototype.valueOf,1)));
     }
-    
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-    
+
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     i = Math.max(i,0);
     // Present old object
     imPEOld = document.getElementById("PicOldPE");
     imPE2 = imPEOld.getContext("2d");
-    
+
     fillCanvs(imPE2,[100,100],function(){
         // Draw preceding object in small box
         if (i !== 0){   // not on first trial - no preceding object
@@ -803,46 +803,46 @@ function passiveExposurePresentNewObj(){
             peImg2.onload = function() {
                 imPE2.drawImage(peImg2, 0,0, 100, 100);
             };
-        }       
-    });  
+        }
+    });
 
     // Present object 'obj' in given orientation, determine correct button press
     if (Math.random() < 0.5){
         obj.objOrient[i] = ("");
         // Determine which button is the correct one to press
-        obj.key_corr[i] = data.option[data.mirror[obj.objSeq[i]]];  
+        obj.key_corr[i] = data.option[data.mirror[obj.objSeq[i]]];
         obj.key_incorr[i] = data.option[(data.mirror[obj.objSeq[i]]+1)%2];// which orientation is associated with the left button?
     } else {
         obj.objOrient[i] = "_mirr";
         obj.key_corr[i] = data.option[(data.mirror[obj.objSeq[i]]+1)%2];        // which orientation is associated with the left button?
-        obj.key_incorr[i] = data.option[data.mirror[obj.objSeq[i]]];  
+        obj.key_incorr[i] = data.option[data.mirror[obj.objSeq[i]]];
     }
-        
+
     // Draw object
-    peImg1.src = "images/" + data.stimuli[map][obj.objSeq[i]] + obj.objOrient[i] + ".png";
-       
+    peImg1.src = "../images/" + data.stimuli[map][obj.objSeq[i]] + obj.objOrient[i] + ".png";
+
     // Present new object
     imPENew = document.getElementById("PicNewPE");
     imPE1 = imPENew.getContext("2d");
-    
+
     fillCanvs(imPE1,[200,200],function(){
         peImg1.onload = function() {
             imPE1.drawImage(peImg1, 0,0);
-        };    
+        };
         imPENew.style.border= "5px solid #ffffff";
-        feedbackImg.src = "images/empty.png";    
-    });  
-        
+        feedbackImg.src = "../images/empty.png";
+    });
+
     // Stimulus onset time
     d = new Date();
-    obj.stim_on[i] = d.getTime();  
-    
+    obj.stim_on[i] = d.getTime();
+
     // Wait for button press
     document.onkeydown = checkKey;
-}    
+}
 
 var r;
-function checkKey(e) {  
+function checkKey(e) {
     if (i < obj.trials){
         if (e.keyCode == obj.key_corr[i] || e.keyCode == obj.key_incorr[i]) {
             obj.key[i] = e.keyCode;
@@ -851,57 +851,57 @@ function checkKey(e) {
             d = new Date();
             obj.responseT[i] = d.getTime();
             obj.RT[i] = obj.responseT[i] - obj.stim_on[i];
-                
-            // Was this the correct button?    
+
+            // Was this the correct button?
             if (obj.key[i] == obj.key_corr[i]) {
                 obj.cr[i] = 1;
-                // Feedback in passive Exposure Task    
+                // Feedback in passive Exposure Task
                 imPENew.style.border= "5px solid #8CC641";
-                feedbackImg.src = "images/correct.png";
+                feedbackImg.src = "../images/correct.png";
                 obj.totalRew++;
                 data.totalReward++;
             } else if (obj.key[i] == obj.key_incorr[i]) {
                 obj.cr[i] = -1;
                 imPENew.style.border= "5px solid #EC2028";
-                feedbackImg.src = "images/incorrect.png";
+                feedbackImg.src = "../images/incorrect.png";
                 if (obj.totalRew > 0){
                     data.totalReward--;
                 }
-                obj.totalRew = Math.max(0,obj.totalRew-1);                
-            }    
-            imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-            imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-            imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-    
+                obj.totalRew = Math.max(0,obj.totalRew-1);
+            }
+            imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+            imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+            imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
             // Move on to next object
-            i++;  
+            i++;
 
             // Choose next object. Make sure it is not a neighbour of the preceding object on the data.graph!
             r = Math.ceil(Math.random()*settings.nobj);
             while (data.graph[obj.objSeq[i-1]][r]!==1) {
                 r = Math.ceil(Math.random()*settings.nobj);
-            }     
+            }
             obj.objSeq[i] = r;
-            
-            setTimeout(function() {                
-                passiveExposurePresentNewObj(obj.objSeq[i]);  
+
+            setTimeout(function() {
+                passiveExposurePresentNewObj(obj.objSeq[i]);
             },timelag);
-            
+
             obj.RTBlock = obj.RT.reduce(add, 0);
             obj.RTBlock = Math.round(obj.RTBlock/obj.RT.length);
             obj.crBlock = Math.ceil((obj.RT.length/2 + obj.cr.reduce(add, 0)/2)/obj.RT.length * 100);
 
-            document.getElementById("displayCrBlock").innerHTML=obj.crBlock + "%";  
+            document.getElementById("displayCrBlock").innerHTML=obj.crBlock + "%";
             document.getElementById("displayRTBlock").innerHTML=obj.RTBlock + " ms";
         }
     } else {
         obj.endTime = recordTime();
         proceedInExpt();
-        
-    }        
+
+    }
 }
- 
- 
+
+
 //// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Passive navigation task
 
@@ -909,9 +909,9 @@ var imPNOption = [];
 var chosenObjPN;
 var imPNChosen = document.getElementById("chosenPicPN");
 for (o = 0; o<2; o++){
-    imPNOption[o] = document.getElementById("Pic"+o+"PN"); 
-}   
-    
+    imPNOption[o] = document.getElementById("Pic"+o+"PN");
+}
+
 function PassiveNavigation(){
     this.chosenSeq  = [randomIntFromInterval(0,settings.nobj-1)]; // random start object
     this.objOrient  = [];
@@ -925,17 +925,17 @@ function PassiveNavigation(){
 }
 
 function passiveNavigationPresentNewObj() {
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(0,i);
     if (i > settings.trialsPassiveNavigation){
         obj.endTime = recordTime();
         proceedInExpt();
     } else {
         if (i===0){
-            
+
             // Set this to the background colour
-            imPNChosen.src = "images/" + imgWorld + ".png";
-            
+            imPNChosen.src = "../images/" + imgWorld + ".png";
+
             // New passive navigation object
             data.passiveNavigation[data.passiveNavigation.length] = new PassiveNavigation();
             obj = data.passiveNavigation[data.passiveNavigation.length-1];
@@ -952,7 +952,7 @@ function passiveNavigationPresentNewObj() {
         obj.options[i] = [];
 
         object     = obj.chosenSeq[i];
-    
+
         document.getElementById("moveToNext").disabled = true;
         document.getElementById("moveToNext").className = "edit-button disabled";
 
@@ -963,11 +963,11 @@ function passiveNavigationPresentNewObj() {
             }
         }
         neighbour = shuffle(neighbour);
-    
+
         // Choose two options for object 1 and 2 that are neighbours on the data.graph
         obj.options[i][0] = neighbour[0];
         obj.options[i][1] = neighbour[1];
-        
+
         drawObject(0);
         drawObject(1);
 
@@ -986,31 +986,31 @@ function choosePassiveNavigation(){
         obj.earlyResponse[i] = 1;
     } else {
         obj.earlyResponse[i] = 0;
-    }    
-    
-    //     record RT 
+    }
+
+    //     record RT
     d = new Date();
     obj.responseT[i] = d.getTime();
     obj.RT[i]        = obj.responseT[i] - obj.stim_on[i];
 
-    // Mark chosen object and remove other object            
+    // Mark chosen object and remove other object
     imPNOption[chosenObjPN].style.border= "5px solid #545454";
-    
+
     setTimeout(function() {
-        i++;    
+        i++;
         // Record chosen object
         obj.chosenSeq[i] = obj.options[i-1][chosenObjPN];
-    
-        //    Counts transitions chosen by subject & rewards with 50% probability if not rewarded before   
+
+        //    Counts transitions chosen by subject & rewards with 50% probability if not rewarded before
         if (Math.random()<0.5 && rewardTransitions[obj.chosenSeq[i-1]][obj.chosenSeq[i]] === 0){
             obj.cr[i] = 1;
             obj.totalRew++;
             data.totalReward++;
-    
+
             rewardTransitions[obj.chosenSeq[i-1]][obj.chosenSeq[i]] = 1;
-            imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-            imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-            imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
+            imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+            imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+            imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
         }
 
         if (i > 0){
@@ -1020,40 +1020,40 @@ function choosePassiveNavigation(){
         // Mark old object as chosen object
         // This is now the previously chosen object
         imPNChosen.src = imPNOption[chosenObjPN].src;
-        
+
         for(o = 0; o < 2; o++){
-            imPNOption[o].src = "images/" + imgWorld + ".png";
+            imPNOption[o].src = "../images/" + imgWorld + ".png";
             document.getElementById("Pic0PN").style.border = "5px solid white";
         }
-    
+
         // Enable 'next card' button
         document.getElementById("moveToNext").disabled = false;
-        
+
         // Disable onclick
         imPNOption[0].onclick = null;
-        imPNOption[1].onclick = null;   
+        imPNOption[1].onclick = null;
     },timelag);
 }
 
-function drawObject(o){  
+function drawObject(o){
     // Present object 'obj' in given orientation, determine correct button press
-    if (Math.random() < 0.5){        
-        obj.objOrient[i][o] = 0;        
-        imPNOption[o].src = "images/" + data.stimuli[map][obj.options[i][o]] + "_" + imgWorld + ".png";
-    } else{        
-        obj.objOrient[i][o] = 1;    
-        imPNOption[o].src = "images/" + data.stimuli[map][obj.options[i][o]] + "_" + imgWorld + ".png";
+    if (Math.random() < 0.5){
+        obj.objOrient[i][o] = 0;
+        imPNOption[o].src = "../images/" + data.stimuli[map][obj.options[i][o]] + "_" + imgWorld + ".png";
+    } else{
+        obj.objOrient[i][o] = 1;
+        imPNOption[o].src = "../images/" + data.stimuli[map][obj.options[i][o]] + "_" + imgWorld + ".png";
     }
 }
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Learn pairs
 var stimA = document.getElementById("Pic1A");
-var stimB = document.getElementById("Pic2A");      
+var stimB = document.getElementById("Pic2A");
 
 // To randomize stimulus pair presentation during pairwise association task
-var memCorr = document.getElementById("memCorr"); 
-var totalPairs = document.getElementById("totalPairs"); 
+var memCorr = document.getElementById("memCorr");
+var totalPairs = document.getElementById("totalPairs");
 
 function LearnPairs(){
     this.ix             = [];
@@ -1070,12 +1070,12 @@ function LearnPairs(){
 
 // Create random object sequences
 function setPairwiseSequence(){
-    data.learnPairs[data.learnPairs.length] = new LearnPairs();    
+    data.learnPairs[data.learnPairs.length] = new LearnPairs();
     obj = data.learnPairs[data.learnPairs.length-1];
     obj.startTime = recordTime();
-    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+    ix = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
     obj.context = Array.apply(null, Array(ix.length)).map(Number.prototype.valueOf,map);
-       
+
     obj.maxTrials = ix.length;
     for (var i = 0; i<obj.maxTrials; i++){
         assocTestTrial = ix.pop();
@@ -1089,13 +1089,13 @@ function setPairwiseSequence(){
         }
         obj.ix.push(assocTestTrial);
         obj.pairA.push(pairsA[assocTestTrial]);
-        obj.pairB.push(pairsB[assocTestTrial]);   
+        obj.pairB.push(pairsB[assocTestTrial]);
     }
 };
 
 //Present object pair i from object obj
 function presentTwoObjects(){
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i++;
     if (obj.trialCounter < obj.maxTrials){
         map = obj.context[i];
@@ -1105,26 +1105,26 @@ function presentTwoObjects(){
         } else {
             obj.pairA_orient.push('_mirr');
         }
-        
+
         if (Math.random() < 0.5){
             obj.pairB_orient.push('');
         } else {
             obj.pairB_orient.push('_mirr');
         }
-        
-        stimA.src = "images/" + data.stimuli[map][obj.pairA[i]] + obj.pairA_orient[i] + ".png";
-        stimB.src = "images/" + data.stimuli[map][obj.pairB[i]] + obj.pairB_orient[i] + ".png";
-        
+
+        stimA.src = "../images/" + data.stimuli[map][obj.pairA[i]] + obj.pairA_orient[i] + ".png";
+        stimB.src = "../images/" + data.stimuli[map][obj.pairB[i]] + obj.pairB_orient[i] + ".png";
+
         d = new Date();
         obj.stim_on.push(d.getTime());
         obj.RT[i-1] = obj.stim_on[i]-obj.stim_on[i-1];
         obj.trialCounter++;
-        
+
         // add up values for output;
         var cr = obj.cr; cr = cr.map(cr => cr === 1 ? 1 : 0);
-        document.getElementById("crMemories").innerHTML     = cr.reduce(add, 0);  
-        document.getElementById("totalMemories").innerHTML  = cr.length;        
-        
+        document.getElementById("crMemories").innerHTML     = cr.reduce(add, 0);
+        document.getElementById("totalMemories").innerHTML  = cr.length;
+
     } else {
         proceedInExpt();
         obj.endTime = recordTime();
@@ -1132,7 +1132,7 @@ function presentTwoObjects(){
 };
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// Memory test 
+// Memory test
 function MemoryTest(){
     this.seq            = [];
     this.ix             = [];
@@ -1152,30 +1152,30 @@ function MemoryTest(){
 }
 
 //Present object pair i from object obj
-function generateMemorySequence(){   
-    stimA.src = "images/empty.png";
-    stimB.src = "images/empty.png";
+function generateMemorySequence(){
+    stimA.src = "../images/empty.png";
+    stimB.src = "../images/empty.png";
     data.memory[data.memory.length] = new MemoryTest();
-    
+
     obj = data.memory[data.memory.length-1];
     obj.startTime = recordTime();
-        
-    ix[0] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+
+    ix[0] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
     nonix[0] = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
-    nonix[0] = nonix[0].slice(0, ix[0].length); 
-    
-    ix[1] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+    nonix[0] = nonix[0].slice(0, ix[0].length);
+
+    ix[1] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
     nonix[1] = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
-    nonix[1] = nonix[1].slice(0, ix[1].length); 
-    
-    
+    nonix[1] = nonix[1].slice(0, ix[1].length);
+
+
     if (settings.day === 1 || settings.day === 2){
         obj.context = Array.apply(null, Array(ix[map].length + nonix[map].length)).map(Number.prototype.valueOf,map);
     } else {
         obj.context =(Array.apply(null, Array(ix[0].length + nonix[0].length)).map(Number.prototype.valueOf,0));
         obj.context = shuffle(obj.context.concat(Array.apply(null, Array(ix[1].length + nonix[1].length)).map(Number.prototype.valueOf,1)));
     }
-    
+
     for (var i = 0; i<obj.context.length; i++){
         map = obj.context[i];
         t = 0;
@@ -1191,7 +1191,7 @@ function generateMemorySequence(){
             }
             obj.seq.push(assocTestTrial);
             obj.pairA.push(pairsA[assocTestTrial]);
-            obj.pairB.push(pairsB[assocTestTrial]);    
+            obj.pairB.push(pairsB[assocTestTrial]);
 
         } else {
             obj.paired.push(0);
@@ -1204,12 +1204,12 @@ function generateMemorySequence(){
             }
             obj.seq.push(assocTestTrial);
             obj.pairA.push(nonPairsA[assocTestTrial]);
-            obj.pairB.push(nonPairsB[assocTestTrial]);   
+            obj.pairB.push(nonPairsB[assocTestTrial]);
         }
     }
     obj.maxTrials = Math.min(obj.context.length, settings.trialsMemory);
 }
-    
+
 function recordMemoryResponse(response){
     $('button').prop('disabled', true);
     if (i > -1){
@@ -1220,20 +1220,20 @@ function recordMemoryResponse(response){
             obj.cr.push(1);
             data.totalReward++;
             obj.totalRew++;
-            feedbackImg.src = "images/correct.png";    
+            feedbackImg.src = "../images/correct.png";
         } else {
             obj.cr.push(-1);
             if (obj.totalRew > 0){
                 data.totalReward--;
             }
             obj.totalRew = Math.max(0,obj.totalRew-1);
-            feedbackImg.src = "images/incorrect.png";   
-        } 
+            feedbackImg.src = "../images/incorrect.png";
+        }
     }
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-        
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     setTimeout(function() {
         // move on
         $('button').prop('disabled', false);
@@ -1241,7 +1241,7 @@ function recordMemoryResponse(response){
     },timelag);
 }
 
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Shuffle object pairs
 var targetObj = document.getElementById("targetFP");
 var imgOption = [];
@@ -1265,25 +1265,25 @@ function FindPartner(){
     this.totalRew       = [];
 }
 
-var objLoc = [0,1,2]; 
+var objLoc = [0,1,2];
 
-// Present pairwise associations 
+// Present pairwise associations
 function findPartner(){
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(i,0);
     if (i === 0) {
-        data.findPartner[data.findPartner.length] = new FindPartner();    
-        obj = data.findPartner[data.findPartner.length-1]; 
-        obj.startTime = recordTime();      
-        
-        ix[0] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
-        nonix[0] = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
-        nonix[0] = nonix[0].slice(0, ix[0].length); 
+        data.findPartner[data.findPartner.length] = new FindPartner();
+        obj = data.findPartner[data.findPartner.length-1];
+        obj.startTime = recordTime();
 
-        ix[1] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));  
+        ix[0] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
+        nonix[0] = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
+        nonix[0] = nonix[0].slice(0, ix[0].length);
+
+        ix[1] = shuffle(Array.apply(null, {length: pairsA.length}).map(Number.call, Number));
         nonix[1] = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
-        nonix[1] = nonix[1].slice(0, ix[1].length); 
-        
+        nonix[1] = nonix[1].slice(0, ix[1].length);
+
         if (settings.day === 1 || settings.day === 2){
             obj.maxTrials = ix[map].length;
             obj.ix = ix[map];
@@ -1292,7 +1292,7 @@ function findPartner(){
             obj.maxTrials = ix[map].length*2;
             obj.context =(Array.apply(null, Array(obj.maxTrials/2)).map(Number.prototype.valueOf,0));
             obj.context = shuffle(obj.context.concat(Array.apply(null, Array(obj.maxTrials/2)).map(Number.prototype.valueOf,1)));
-            
+
             var c = []; c[0] = 0; c[1] = 0;
             for (o = 0; o < obj.context.length; o++){
                 obj.ix[o] = ix[obj.context[o]][c[obj.context[o]]];
@@ -1300,91 +1300,91 @@ function findPartner(){
             }
         }
     }
-    
+
     if (i < obj.maxTrials){
         map = obj.context[i];
         setContext(setContext(contextOrder[map]));
-        
+
         // Randomize object locations
         obj.location[i]     = shuffle(objLoc);
         obj.otherObj[i]     = [];
-        
+
         // Target object and partner object
         obj.target[i]       = pairsA[obj.ix[i]];
         obj.otherObj[i][0]  = pairsB[obj.ix[i]];        // The 0th object corresponds to the correct partner
-        
+
         // Display target object
-        targetObj.src       = (Math.random() < 0.5) ? "images/" + data.stimuli[map][obj.target[i]] + ".png" : "images/" + data.stimuli[map][obj.target[i]] + "_mirr.png";
-        
+        targetObj.src       = (Math.random() < 0.5) ? "../images/" + data.stimuli[map][obj.target[i]] + ".png" : "../images/" + data.stimuli[map][obj.target[i]] + "_mirr.png";
+
         // Objects 1 and 2 are distractor objects
         obj.otherObj[i][1] = Math.floor(Math.random()*settings.nobj);
-        while (data.dist[obj.target[i]][obj.otherObj[i][1]]===1 || obj.otherObj[i][1] === obj.target[i] 
+        while (data.dist[obj.target[i]][obj.otherObj[i][1]]===1 || obj.otherObj[i][1] === obj.target[i]
                 || obj.otherObj[i][1] === obj.otherObj[i][0]  ) {
             obj.otherObj[i][1] = Math.floor(Math.random()*settings.nobj);
-        } 
-        
+        }
+
         obj.otherObj[i][2] = Math.floor(Math.random()*settings.nobj);
-        while (data.dist[obj.target[i]][obj.otherObj[i][2]]===1 || obj.otherObj[i][2] === obj.target[i] 
+        while (data.dist[obj.target[i]][obj.otherObj[i][2]]===1 || obj.otherObj[i][2] === obj.target[i]
                 || obj.otherObj[i][2] === obj.otherObj[i][0] || obj.otherObj[i][2] === obj.otherObj[i][1]) {
             obj.otherObj[i][2] = Math.floor(Math.random()*settings.nobj);
-        } 
-        
+        }
+
         // draw target image, make sure the object location is randomized
         for(var pos=0; pos<3; pos++){
 //            Which object is in this position?
             var a = [0, 1, 2].indexOf(obj.location[i][pos]);
-            imgOption[pos].src = (Math.random() < 0.5) ? "images/" + data.stimuli[map][obj.otherObj[i][a]] + ".png" : "images/" + data.stimuli[map][obj.otherObj[i][a]] + "_mirr.png";            
+            imgOption[pos].src = (Math.random() < 0.5) ? "../images/" + data.stimuli[map][obj.otherObj[i][a]] + ".png" : "../images/" + data.stimuli[map][obj.otherObj[i][a]] + "_mirr.png";
         }
         d = new Date();
         obj.stimPres[i] = d.getTime();
-    
+
     } else {
         proceedInExpt();
         obj.endTime = recordTime();
-    } 
+    }
 }
 
 function findPartnerChooseObj(findPartnerChoice){
 // Which object did the subject choose?
     obj.chosenPos[i] = findPartnerChoice;
     obj.chosenObj[i] = obj.otherObj[i][findPartnerChoice];
-    
+
     // Was this the correct object? (i.e. 0th position in terms of obj.location)?
     if (obj.location[i][findPartnerChoice] === 0){
         obj.cr[i] = 1;
         data.totalReward++;
         obj.totalRew++;
-        feedbackImg.src = "images/correct.png"; 
+        feedbackImg.src = "../images/correct.png";
     } else {
         obj.cr[i] = -1;
         if (obj.totalRew > 0){
             data.totalReward--;
         }
         obj.totalRew = Math.max(0,obj.totalRew-1);
-        feedbackImg.src = "images/incorrect.png"; 
+        feedbackImg.src = "../images/incorrect.png";
     }
-    
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew ,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew -50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew -100,50),0) + "coins.png"; 
-    
+
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew ,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew -50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew -100,50),0) + "coins.png";
+
 //    Make the other two objects disappear
     for(var pos=0; pos<3; pos++){
         if (pos !== findPartnerChoice){
-            imgOption[pos].src = "images/empty.png";
+            imgOption[pos].src = "../images/empty.png";
         }
     }
-    
+
     // Record RTs
     d = new Date();
     obj.responseT[i] = d.getTime();
-    obj.RT[i] = obj.responseT[i] - obj.stimPres[i];  
-    
+    obj.RT[i] = obj.responseT[i] - obj.stimPres[i];
+
     i++;
-    
-    document.getElementById("crFindPartnerMemories").innerHTML      = obj.RT.length/2 + obj.cr.reduce(add, 0)/2;  
-    document.getElementById("totalFindPartnerMemories").innerHTML   = obj.cr.length;         
-    
+
+    document.getElementById("crFindPartnerMemories").innerHTML      = obj.RT.length/2 + obj.cr.reduce(add, 0)/2;
+    document.getElementById("totalFindPartnerMemories").innerHTML   = obj.cr.length;
+
     setTimeout(function() {
         // move on
         findPartner();
@@ -1393,7 +1393,7 @@ function findPartnerChooseObj(findPartnerChoice){
 
 //// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Goal navigation task
- 
+
 function GoalNavigation(){
     this.chosenSeq      = [[]];
     this.objOrient      = [];               // Chosen object orientation
@@ -1418,11 +1418,11 @@ var targetPicGN     = document.getElementById("targetPicGN");
 var chosenPicGN     = document.getElementById("chosenPicGN");
 var imGNOption = [];
 for (o = 0; o < 2; o++){
-    imGNOption[o]   = document.getElementById("Pic"+o+"GN"); 
+    imGNOption[o]   = document.getElementById("Pic"+o+"GN");
 }
 
 var imGNOptionCanvas, imGNOptionCtx;
-var distFromTarget, next, thisO, distractorO; 
+var distFromTarget, next, thisO, distractorO;
 var imgOptionGN = []; imgOptionGN[0] = new Image(); imgOptionGN[1] = new Image();
 
 var leftOverNonix = [];
@@ -1432,7 +1432,7 @@ var currentProgress = 0;
 $( "#progressbar" ).progressbar({
     value: 0
 });
-   
+
 function initializeTaskGoalNavigation() {
     if (!settings.displayFeedback){
         $("#goalNavigationPerformance").hide();
@@ -1440,10 +1440,10 @@ function initializeTaskGoalNavigation() {
         $("#progressbar").show();
         $("#goalNavigationPerformance").show();
     }
-    
+
     i = Math.max(0,i);
     step = 0;
-    
+
     data.goalNavigation[data.goalNavigation.length] = new GoalNavigation;
     obj = data.goalNavigation[data.goalNavigation.length-1];
     obj.startTime = recordTime();
@@ -1455,17 +1455,17 @@ function initializeTaskGoalNavigation() {
                 map = 0;
             } else if (settings.day === 2 && settings.numberOfMaps > 1){
                 map = 1;
-            }   
+            }
         }
         obj.context = Array.apply(null, Array(settings.trialsGoalNavigation)).map(Number.prototype.valueOf,map);
     } else {
         obj.context =(Array.apply(null, Array(settings.trialsGoalNavigation/2)).map(Number.prototype.valueOf,0));
         obj.context = shuffle(obj.context.concat(Array.apply(null, Array(settings.trialsGoalNavigation/2)).map(Number.prototype.valueOf,1)));
     }
-    
+
     if (leftOverNonix.length >= obj.maxTrials){
         obj.nonix = leftOverNonix;
-    } else {   
+    } else {
         obj.nonix = shuffle(Array.apply(null, {length: nonPairsA.length}).map(Number.call, Number));
     }
     for (var ix = 0; ix < obj.maxTrials; ix++ ) {
@@ -1489,19 +1489,19 @@ function displayGoalNavigation() {
     $('#goalNavigation').show();
     $('#displayGoalNavigationSequence').hide();
     $('#goalNavigationShortestPathSelected').hide();
-    
+
     if (i >= obj.maxTrials || i > obj.nonix.length-1){
-        
+
         // Make sure that in a new block a new set of pairs is probed
         var counter = 0;
-        for (o = i; o<obj.nonix.length; o++){    
+        for (o = i; o<obj.nonix.length; o++){
             leftOverNonix[counter] = obj.nonix[o];
             counter++;
         }
         obj.endTime = recordTime();
         saveData();
         proceedInExpt();
-    } else if (i < obj.maxTrials && step === 0){        
+    } else if (i < obj.maxTrials && step === 0){
         obj.chosenSeq[i][step]  = [];
         obj.objOrient[i][step]  = [];
         obj.options[i][step]    = [];
@@ -1513,45 +1513,45 @@ function displayGoalNavigation() {
         }
         obj.currentProgress[i][step] = 0;
         obj.progressStepSize[i][step] = [];
-        
-        progressCoins.src = "images/coins/0coins.png";         
-        $("#progressbar").progressbar( "option", "value", obj.currentProgress[i][step]); 
-        
+
+        progressCoins.src = "../images/coins/0coins.png";
+        $("#progressbar").progressbar( "option", "value", obj.currentProgress[i][step]);
+
         setTimeout(function(){
             map = obj.context[i];
             setContext(contextOrder[map]);
-        
-            targetPicGN.src = "images/" + imgWorld + ".png";
-            chosenPicGN.src = "images/" + imgWorld + ".png";
+
+            targetPicGN.src = "../images/" + imgWorld + ".png";
+            chosenPicGN.src = "../images/" + imgWorld + ".png";
             for (o = 0; o < 2; o++){
-                 imGNOption[o].src = "images/" + imgWorld + ".png";
+                 imGNOption[o].src = "../images/" + imgWorld + ".png";
             }
         }, timelag);
-        
+
         // Pick a new start and target object
         obj.chosenSeq[i][step]  = nonPairsA[obj.nonix[i]];
         obj.target[i]           = nonPairsB[obj.nonix[i]];
 
         setTimeout(function() {
             if (Math.random() < 0.5){
-                chosenPicGN.src = "images/" + data.stimuli[map][obj.chosenSeq[i][step]] + "_" + imgWorld + ".png";
+                chosenPicGN.src = "../images/" + data.stimuli[map][obj.chosenSeq[i][step]] + "_" + imgWorld + ".png";
             } else {
-                chosenPicGN.src = "images/" + data.stimuli[map][obj.chosenSeq[i][step]] + "_mirr_" + imgWorld + ".png";}
+                chosenPicGN.src = "../images/" + data.stimuli[map][obj.chosenSeq[i][step]] + "_mirr_" + imgWorld + ".png";}
             if (Math.random() < 0.5){
-                targetPicGN.src = "images/" + data.stimuli[map][obj.target[i]] + "_" + imgWorld + ".png";
+                targetPicGN.src = "../images/" + data.stimuli[map][obj.target[i]] + "_" + imgWorld + ".png";
             } else {
-                targetPicGN.src = "images/" + data.stimuli[map][obj.target[i]] + "_mirr_" + imgWorld + ".png";}
+                targetPicGN.src = "../images/" + data.stimuli[map][obj.target[i]] + "_mirr_" + imgWorld + ".png";}
         }, timelag);
     }
 
-    if (step === 0){ 
+    if (step === 0){
         obj.toWinOnThisTrial[i][step] = data.dist[obj.target[i]][obj.chosenSeq[i][0]] ;
-        obj.progressStepSize[i][step] = 100/data.dist[obj.target[i]][obj.chosenSeq[i][step]];            
+        obj.progressStepSize[i][step] = 100/data.dist[obj.target[i]][obj.chosenSeq[i][step]];
     }
     if (step !== 0 && settings.displayFeedback){
-        progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
+        progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
     }
-        
+
     // Find one object that is on the way to the target and pick an additional distractor object
     data.distFromTarget = []; for (var j=0; j<6; j++){data.distFromTarget[j] = [];};
     for (j = 0; j < settings.nobj; j++){
@@ -1596,7 +1596,7 @@ function displayGoalNavigation() {
     } else {
         obj.options[i][step][1] = next; thisO = 1; distractorO = 0;
     }
-    
+
     neighbour = [];
     for(j = 0; j < settings.nobj; j++){
         if (data.dist[obj.chosenSeq[i][step]][j] === 1 && j !== next){
@@ -1604,8 +1604,8 @@ function displayGoalNavigation() {
         }
     }
     neighbour = shuffle(neighbour);
-    
-    // Pick a second distractor object    
+
+    // Pick a second distractor object
     obj.options[i][step][distractorO] = neighbour[0];
     if (obj.chosenSeq[i][step] === obj.target[i]){ // id rhw choice is correct
         data.totalReward += Math.max(0,obj.toWinOnThisTrial[i][step]);
@@ -1613,47 +1613,47 @@ function displayGoalNavigation() {
         i++;
         step = 0;
         setTimeout(function(){
-            targetPicGN.src = "images/" + imgWorld + ".png";
-            chosenPicGN.src = "images/" + imgWorld + ".png";
+            targetPicGN.src = "../images/" + imgWorld + ".png";
+            chosenPicGN.src = "../images/" + imgWorld + ".png";
             displayGoalNavigationSequence();
-        }, timelag);        
-    } else { 
+        }, timelag);
+    } else {
         setTimeout(function() {
             drawOption(0);
             drawOption(1);
             if (settings.displayFeedback){
-                progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
+                progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
             } else {
-                progressCoins.src = "images/empty.png";  
+                progressCoins.src = "../images/empty.png";
             }
             d = new Date();
             obj.stim_on[i][step] = d.getTime();
         }, timelag);
     }
-}   
+}
 
 function drawOption(ox){
         // Present object 'obj' in given orientation, determine correct button press
-        if (Math.random() < 0.5){   
+        if (Math.random() < 0.5){
             obj.objOrient[i][step][ox] = ("");
-            imGNOption[ox].src = "images/" + data.stimuli[map][obj.options[i][step][ox]] + "_" + imgWorld + ".png";
-        } else{        
+            imGNOption[ox].src = "../images/" + data.stimuli[map][obj.options[i][step][ox]] + "_" + imgWorld + ".png";
+        } else{
             obj.objOrient[i][step][ox] = ("_mirr");
-            imGNOption[ox].src = "images/" + data.stimuli[map][obj.options[i][step][ox]] + "_mirr_" + imgWorld + ".png";
+            imGNOption[ox].src = "../images/" + data.stimuli[map][obj.options[i][step][ox]] + "_mirr_" + imgWorld + ".png";
         }
-        imGNOption[ox].onclick = function(){chooseGN(ox);}; 
+        imGNOption[ox].onclick = function(){chooseGN(ox);};
 }
 
 function chooseGN(chosenObjGoalNavigation){
     // record RT
     d = new Date();
-    obj.responseT[i][step] = d.getTime();    
+    obj.responseT[i][step] = d.getTime();
     obj.RT[i][step] = obj.responseT[i][step] - obj.stim_on[i][step];
     obj.sideChosen[i][step]     = chosenObjGoalNavigation;
-    
+
     imGNOption[0].onclick = null;
-    imGNOption[1].onclick = null;  
-        
+    imGNOption[1].onclick = null;
+
     // Record response;
     step++;
     obj.chosenSeq[i][step]  = [];
@@ -1666,14 +1666,14 @@ function chooseGN(chosenObjGoalNavigation){
         obj.options[i][step][ox] = [];
     }
     obj.chosenSeq[i][step] = obj.options[i][step-1][chosenObjGoalNavigation];
-    
+
     // Make other object disappear
-    imGNOption[(chosenObjGoalNavigation+1)%2].src = "images/" + imgWorld + ".png";
-    
-    if (data.dist[obj.target[i]][obj.options[i][step-1][chosenObjGoalNavigation]] >             
+    imGNOption[(chosenObjGoalNavigation+1)%2].src = "../images/" + imgWorld + ".png";
+
+    if (data.dist[obj.target[i]][obj.options[i][step-1][chosenObjGoalNavigation]] >
         data.dist[obj.target[i]][obj.options[i][step-1][(chosenObjGoalNavigation + 1)%2]]){
         obj.rewardSeq[i][step] = -1;
-        obj.currentProgress[i][step] = Math.max(0,obj.currentProgress[i][step-1] - obj.progressStepSize[i][step-1]);           
+        obj.currentProgress[i][step] = Math.max(0,obj.currentProgress[i][step-1] - obj.progressStepSize[i][step-1]);
         obj.toWinOnThisTrial[i][step] = obj.toWinOnThisTrial[i][step-1]-1;
         if (obj.currentProgress[i][step] <= 0){
             obj.progressStepSize[i][step] = 100/data.dist[obj.target[i]][obj.chosenSeq[i][step]];
@@ -1682,24 +1682,24 @@ function chooseGN(chosenObjGoalNavigation){
         }
     } else {
         obj.rewardSeq[i][step] = 1;
-        obj.currentProgress[i][step] = Math.max(0,obj.currentProgress[i][step-1] + obj.progressStepSize[i][step-1]);           
+        obj.currentProgress[i][step] = Math.max(0,obj.currentProgress[i][step-1] + obj.progressStepSize[i][step-1]);
         obj.toWinOnThisTrial[i][step] = obj.toWinOnThisTrial[i][step-1];
         obj.progressStepSize[i][step] = obj.progressStepSize[i][step-1];
-    }  
-    progressCoins.src = 'images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png"; 
-    $("#progressbar").progressbar( "option", "value", obj.currentProgress[i][step]); 
-           
-    setTimeout(function() {            
+    }
+    progressCoins.src = '../images/coins/' + Math.max(0,obj.toWinOnThisTrial[i][step]) + "coins.png";
+    $("#progressbar").progressbar( "option", "value", obj.currentProgress[i][step]);
+
+    setTimeout(function() {
         // Move chosen image to chosen image position
         chosenPicGN.src = imGNOption[chosenObjGoalNavigation].src;
-        imGNOption[chosenObjGoalNavigation].src = "images/" + imgWorld + ".png";
-          
-        feedbackImg2.src = "images/empty.png";    
-        progressCoins.src = "images/empty.png";     
+        imGNOption[chosenObjGoalNavigation].src = "../images/" + imgWorld + ".png";
+
+        feedbackImg2.src = "../images/empty.png";
+        progressCoins.src = "../images/empty.png";
     }, timelag);
 
     setTimeout(function(){
-        displayGoalNavigation();  
+        displayGoalNavigation();
     },timelag);
 }
 
@@ -1708,11 +1708,11 @@ function displayGoalNavigationSequence(){
     if (!settings.displayFeedback){
         displayGoalNavigation();
     } else {
-        
+
         if (obj.chosenSeq[i-1].length-1 === data.dist[obj.target[i-1]][obj.chosenSeq[i-1][0]]){
             $('#goalNavigationShortestPathSelected').show();
         }
-        
+
         $('#goalNavigation').hide();
         $('#displayGoalNavigationSequence').show();
         $("#goalNavSequence > tbody:last").children().remove();
@@ -1723,7 +1723,7 @@ function displayGoalNavigationSequence(){
                 .append($('<td>')
                     .append($('<img>')
                         .attr({
-                            src: 'images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
+                            src: '../images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
                             }).height(120).width(120)
                         .text('Image cell')
                     )
@@ -1739,7 +1739,7 @@ function displayGoalNavigationSequence(){
                     .append($('<td>')
                         .append($('<img>')
                             .attr({
-                                src: 'images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
+                                src: '../images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
                                 }).height(120).width(120)
                             .text('Image cell')
                         )
@@ -1756,7 +1756,7 @@ function displayGoalNavigationSequence(){
                     .append($('<td>')
                         .append($('<img>')
                             .attr({
-                                src: 'images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
+                                src: '../images/' + data.stimuli[map][obj.chosenSeq[i-1][addSeqEl]] + '.png',
                                 }).height(120).width(120)
                             .text('Image cell')
                         )
@@ -1764,7 +1764,7 @@ function displayGoalNavigationSequence(){
                 );
             };
         }
-        
+
         $('#nextGoalNavigationTrial').show();
     }
 }
@@ -1773,13 +1773,13 @@ function displayGoalNavigationSequence(){
 // Object difference task
 
 // Visualise an example
-var exImPNOption = [], exImPNContext = []; 
+var exImPNOption = [], exImPNContext = [];
 var exImPNChosen = document.getElementById("exChosenPicPN");
 var exImPNChContext = exImPNChosen.getContext("2d");
 var exStart, exStartContext;
 var exPnImg = []; exPnImg[0] = new Image(); exPnImg[1] = new Image(); var exPnImgCh = new Image();
-var stepsOnTheWay = []; 
-var stepL = []; 
+var stepsOnTheWay = [];
+var stepL = [];
 stepsOnTheWay[0] = document.getElementById("exStep1r");
 stepsOnTheWay[1] = document.getElementById("exStep1l");
 stepsOnTheWay[2] = document.getElementById("exStep2l");
@@ -1788,8 +1788,8 @@ stepsOnTheWay[0] = document.getElementById("exStep1r");
 
 function visualiseObjectDifferenceTask(){
     for (o = 0; o < 2; o++){
-        exImPNOption[o] = document.getElementById("exPic"+o+"PN"); 
-        exImPNContext[o] = exImPNOption[o].getContext("2d"); 
+        exImPNOption[o] = document.getElementById("exPic"+o+"PN");
+        exImPNContext[o] = exImPNOption[o].getContext("2d");
         exImPNOption[o].style.border= "5px solid #FFFFFF";
         fillCanvs(exImPNContext[o],[150,150],function(){
         });
@@ -1798,9 +1798,9 @@ function visualiseObjectDifferenceTask(){
     exStart = document.getElementById("exChosenPicPN");
     exStartContext = exStart.getContext("2d");
     exStart.style.border= "5px solid #FFFFFF";
-    
+
     fillCanvs(exStartContext,[150,150],function(){
-        
+
         // Fill these with example objects
         randomStartObject = randomIntFromInterval(0,settings.nobj-1);
 
@@ -1812,39 +1812,39 @@ function visualiseObjectDifferenceTask(){
         randomObj2      = randomIntFromInterval(0,settings.nobj-1);
         while (data.dist[randomStartObject][randomObj2] !== 2){
             randomObj2        = randomIntFromInterval(0,settings.nobj-1);
-        }        
+        }
 
-        exPnImgCh.src = "images/" + data.stimuli[map][randomStartObject] + ".png";
-        exPnImg[0].src = "images/" + data.stimuli[map][randomObj1] + ".png"; 
-        exPnImg[1].src = "images/" + data.stimuli[map][randomObj2] + ".png"; 
-    
+        exPnImgCh.src = "../images/" + data.stimuli[map][randomStartObject] + ".png";
+        exPnImg[0].src = "../images/" + data.stimuli[map][randomObj1] + ".png";
+        exPnImg[1].src = "../images/" + data.stimuli[map][randomObj2] + ".png";
+
         exPnImgCh.onload = function() {
-            exStartContext.drawImage(exPnImgCh, 0,0,100,100);    
+            exStartContext.drawImage(exPnImgCh, 0,0,100,100);
         };
         exPnImg[0].onload = function() {
-            exImPNContext[0].drawImage(exPnImg[0], 0,0,150,150);    
+            exImPNContext[0].drawImage(exPnImg[0], 0,0,150,150);
         };
         exPnImg[1].onload = function() {
-            exImPNContext[1].drawImage(exPnImg[1], 0,0,150,150);    
+            exImPNContext[1].drawImage(exPnImg[1], 0,0,150,150);
         };
     });
-    
+
     var stepRight = randomIntFromInterval(0,settings.nobj-1);
     while (!(data.dist[randomStartObject][stepRight] === 1) && (data.dist[randomStartObject][randomObj2] === 1)){
         stepRight = randomIntFromInterval(0,settings.nobj-1);
     }
-    stepsOnTheWay[0].src = "images/"+data.stimuli[map][stepRight]+".png"; 
-    
+    stepsOnTheWay[0].src = "../images/"+data.stimuli[map][stepRight]+".png";
+
     stepL[0] = randomStartObject;
     for (o = 1; o < 4; o++){
         stepL[o]  = randomIntFromInterval(0,settings.nobj-1);
         while (!(data.dist[stepL[o-1]][stepL[o]] === 1 && data.dist[stepL[o]][randomObj1] === 4-o)){
             stepL[o] = randomIntFromInterval(0,settings.nobj-1);
         }
-        stepsOnTheWay[o].src = "images/" + data.stimuli[map][stepL[o]] + ".png"; 
+        stepsOnTheWay[o].src = "../images/" + data.stimuli[map][stepL[o]] + ".png";
     }
 }
-    
+
 function ObjectDifference(){
     this.target     = []; // random start object
     this.target_orient = [];
@@ -1860,16 +1860,16 @@ function ObjectDifference(){
     this.earlyResponse = [];
     this.sideChosen = [];
 }
-       
+
 function objectDifferencePresentNewObj() {
-    feedbackImg.src = "images/empty.png"; 
+    feedbackImg.src = "../images/empty.png";
     i = Math.max(0,i);
     if (i >= settings.trialsObjectDifference){
         obj.endTime = recordTime();
         saveData();
         proceedInExpt();
     } else {
-        
+
         if (i===0){
             // New passive navigation object
             data.objectDifference[data.objectDifference.length] = new ObjectDifference();
@@ -1884,47 +1884,47 @@ function objectDifferencePresentNewObj() {
         }
         map = obj.context[i];
         setContext(contextOrder[map]);
-        
+
         obj.objOrient[i]    = [];
         obj.dist[i]         = [];
         obj.options[i]      = [];
         obj.target[i]       = randomIntFromInterval(0,settings.nobj-1);
         object              = obj.target[i];
-    
+
         document.getElementById("moveToNext").style.display = "none";
 
         // Choose two options for object 1 and 2 that are neighbours on the data.graph
         obj.options[i][0] =  randomIntFromInterval(0,settings.nobj-1);
         while (obj.options[i][0] === object) {
             obj.options[i][0] = randomIntFromInterval(0,settings.nobj-1);
-        } 
+        }
 
         obj.options[i][1] = randomIntFromInterval(0,settings.nobj-1);
         while (obj.options[i][1] === object || obj.options[i][1] === obj.options[i][0] ||
                 data.dist[obj.options[i][0]][object] === data.dist[obj.options[i][1]][object]) {
             obj.options[i][1] = randomIntFromInterval(0,settings.nobj-1);
-        } 
-        
+        }
+
         obj.dist[i][0] = data.dist[obj.options[i][0]][object];
         obj.dist[i][1] = data.dist[obj.options[i][1]][object];
         obj.dist[i][2] = data.dist[obj.options[i][0]][obj.options[i][1]];
-        
+
         // Mark old object as chosen object
         $(document).ready(function(){
-                if (Math.random() < 0.5){        
-                    obj.target_orient[i] = 0;        
-                    imPNChosen.src = "images/" + data.stimuli[map][obj.target[i]] + "_" + imgWorld + ".png";
-                } else{        
-                    obj.target_orient[i] = 1;    
-                    imPNChosen.src = "images/" + data.stimuli[map][obj.target[i]] + "_mirr_" + imgWorld + ".png";
+                if (Math.random() < 0.5){
+                    obj.target_orient[i] = 0;
+                    imPNChosen.src = "../images/" + data.stimuli[map][obj.target[i]] + "_" + imgWorld + ".png";
+                } else{
+                    obj.target_orient[i] = 1;
+                    imPNChosen.src = "../images/" + data.stimuli[map][obj.target[i]] + "_mirr_" + imgWorld + ".png";
                 }
-            
+
             for (o = 0; o<2; o++){
                     imPNOption[o].style.border= "5px solid #ffffff";
                     drawObject(o);
             }
-        });  
-        
+        });
+
         imPNOption[0].onclick = function(){chosenObjPN = 0; chooseObjectDifference();};
         imPNOption[1].onclick = function(){chosenObjPN = 1; chooseObjectDifference();};
         d = new Date();
@@ -1935,44 +1935,44 @@ function objectDifferencePresentNewObj() {
 function chooseObjectDifference(){
     // Disable onclick
     imPNOption[0].onclick = null;
-    imPNOption[1].onclick = null; 
-        
-    // Record RT 
+    imPNOption[1].onclick = null;
+
+    // Record RT
     d = new Date();
     obj.responseT[i] = d.getTime();
     obj.RT[i]        = obj.responseT[i] - obj.stim_on[i];
     obj.chosenObj[i] = obj.options[i][chosenObjPN];
     obj.sideChosen[i] = chosenObjPN;
-    
+
     if (obj.dist[i][chosenObjPN] < obj.dist[i][(chosenObjPN + 1)%2]){
         if (settings.displayFeedback){
             imPNOption[chosenObjPN].style.border= "5px solid green";
-            feedbackImg.src = "images/correct.png"; 
+            feedbackImg.src = "../images/correct.png";
         } else {
-            imPNOption[chosenObjPN].style.border= "5px solid black";            
-        }       
+            imPNOption[chosenObjPN].style.border= "5px solid black";
+        }
         obj.cr[i] = 1;
-        obj.totalRew++; 
-        data.totalReward ++;        
+        obj.totalRew++;
+        data.totalReward ++;
     } else {
         if (settings.displayFeedback){
             imPNOption[chosenObjPN].style.border= "5px solid red";
-            feedbackImg.src = "images/incorrect.png"; 
+            feedbackImg.src = "../images/incorrect.png";
         } else {
             imPNOption[chosenObjPN].style.border= "5px solid black";
-        }  
+        }
         obj.cr[i] = -1;
         if (obj.totalRew > 0){
-            data.totalReward--;        
+            data.totalReward--;
         }
-        obj.totalRew = Math.max(0,obj.totalRew-1);          
+        obj.totalRew = Math.max(0,obj.totalRew-1);
     }
-    imRew1.src = "images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png"; 
-    imRew2.src = "images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png"; 
-    imRew3.src = "images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png"; 
-          
+    imRew1.src = "../images/coins/" + Math.max(Math.min(obj.totalRew,50),0) + "coins.png";
+    imRew2.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-50,50),0) + "coins.png";
+    imRew3.src = "../images/coins/" + Math.max(Math.min(obj.totalRew-100,50),0) + "coins.png";
+
     setTimeout(function() {
-        i++;        
+        i++;
         objectDifferencePresentNewObj();
     },timelag);
 }
